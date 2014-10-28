@@ -19,6 +19,9 @@
             $( document ).ready(function() {
                 $.get( "data/constellation_data.csv", function( data ) {
                     starData = $.csv.toArrays(data);
+                    console.log("csv ready!");
+                    
+                    //starData[1][7]
                     
                     init();
                 });
@@ -33,40 +36,50 @@
                 camera = new THREE.PerspectiveCamera(50, window.innerWidth/window.innerHeight, 0.1, 1000);
                 camera.position.set(0,10,100);
 
-
                 //we need to update the display
                 renderer = new THREE.WebGLRenderer();
                 renderer.setSize(window.innerWidth, window.innerHeight);
          
                 document.body.appendChild(renderer.domElement);
                 
+                //let there be light
                 var light = new THREE.SpotLight( 0xCCCCCC, 1, 0, Math.PI, 1);
                 light.position.set(20,50,50);
                 scene.add(light);
-                                            
                 
+                // earth woo
                 geometry = new THREE.SphereGeometry(1, 30, 30);
                 material = new THREE.MeshLambertMaterial( {color:0x0000ff});
                 var earth = new THREE.Mesh(geometry, material);  
                 earth.position.set(0, 0, 0);
                 scene.add(earth);
-
-                geometry = new THREE.SphereGeometry(0.5, 30, 30);
-                material = new THREE.MeshLambertMaterial( {color:0x00ffff});
-                var moon = new THREE.Mesh(geometry, material);  
-                moon.position.set(3, 5, 0);
-                scene.add(moon);
                 
+                //draw spheres for each star in the constellation based off csv data
+                geometry = new THREE.SphereGeometry(0.5, 30, 30);
+                for (var i = 1; i < starData.length; i++) {
+                    model = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({color:      Math.random()*0x00ffff}));
+                    
+                    model.position.x = parseFloat(starData[i][4]); 
+                    model.position.y = parseFloat(starData[i][5]);
+                    model.position.z = parseFloat(starData[i][6]);
+                    
+                    scene.add(model);
+                }
+
+//                geometry = new THREE.SphereGeometry(0.5, 30, 30);
+//                material = new THREE.MeshLambertMaterial( {color:0x00ffff});
+//                var moon = new THREE.Mesh(geometry, material);  
+//                moon.position.set(3, 5, 0);
+//                scene.add(moon);
                 
                 geometry = new THREE.PlaneGeometry(50, 50, 1, 1);
                 material = new THREE.MeshPhongMaterial( {color:0xCCCCCC,transparent: true,opacity: 0.5});
                 var plane = new THREE.Mesh(geometry, material);
                 plane.rotation.x = -Math.PI/2;
                 plane.position.set (0, 0, 0);
-     
                 scene.add(plane);
                 
-                
+                // camera controls
                 controls = new THREE.OrbitControls(camera, renderer.domElement);
                 
                 render();
