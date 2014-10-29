@@ -144,15 +144,11 @@
             }
             
             function moveCam(){
-                //                    new TWEEN.Tween(camera.position).to({z:500}, 3000).easing(TWEEN.Easing.Quadratic.InOut).start(); //what we're tweening, to where, with what kind of easing, starting immediately. Can only be somewhere where it's being called once
-                    
-                    var pos1 = new TWEEN.Tween(camera.position).to({z:500}, 3000).easing(TWEEN.Easing.Quadratic.InOut);
-                    var pos2 = new TWEEN.Tween(camera.position).to({z:-200, x: 200}, 3000).easing(TWEEN.Easing.Quadratic.InOut);
+
+                    var pos1 = new TWEEN.Tween(camera.position).to({z:-200, x: 200}, 8000).easing(TWEEN.Easing.Quadratic.InOut);
                     var rot1 = new TWEEN.Tween(camera.rotation).to({y:-3}, 8000).easing(TWEEN.Easing.Quadratic.InOut); //rotation in radians, 3.14 = full 180
-                var rot2 = new TWEEN.Tween(camera.rotation).to({y:2}, 8000).easing(TWEEN.Easing.Quadratic.InOut);
                     
-                pos1.chain(pos2, rot1); //connect 
-                rot1.chain(rot2);
+                pos1.chain(rot1); //connect 
                 pos1.start();
             }
 
