@@ -30,6 +30,7 @@
 	</head>
     
 	<body>
+<!--
         <div id="splashscreen">
        
                 <h1>Zenith</h1>
@@ -37,16 +38,19 @@
                 <br/><br/><a href="#" class="explore" onclick="moveCam();">Explore</a>
             
         </div>
+-->
         
 		<script src="js/three.min.js"></script>
         <script src="js/Detector.js"></script>
         <script src="js/OrbitControls.js"></script>
-        <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script> <!-- neccessary or not to pull in this library? -->
         <script src="js/jquery-csv.min.js"></script>
         <script src="js/tween.min.js"></script>
 		<script>
-            var scene, camera, renderer;
-            var starData;
+            var scene, camera, renderer, axes;
+            var projector, raycaster;
+            var mouse = new THREE.Vector2(), INTERSECTED;
+            var starData, stars;
             
             $( document ).ready(function() {
                 $.get( "data/constellation_data.csv", function( data ) {
@@ -83,10 +87,6 @@
                          var light	= new THREE.AmbientLight( 0x888888 );
 	scene.add( light );
                 
-//                var light	= new THREE.DirectionalLight( 0xcccccc, 0.5 );
-//	light.position.set(5,3,5);
-//	scene.add( light );
-                
                 var light = new THREE.SpotLight( 0xCCCCCC, 1, 0, Math.PI, 1);
                 light.position.set(20,50,50);
                 scene.add(light);
@@ -103,8 +103,12 @@
                     return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
                 }
 
-                //draw spheres for each star in the constellation based off csv data
+                //draw spheres for each star in the constellation based off csv data, model children
                 geometry = new THREE.SphereGeometry(1, 30, 30);
+               
+                stars = new THREE.Object3D();
+                scene.add( stars );
+            
                 for (var i = 1; i < starData.length; i++) {
                     model = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({color:0x00ffff})); 
                     // map magnitude for brightness, parseFloat(starData[i][2])
@@ -123,26 +127,53 @@
 
                     scene.add(model);
                 }
-
-//                geometry = new THREE.SphereGeometry(0.5, 30, 30);
-//                material = new THREE.MeshLambertMaterial( {color:0x00ffff});
-//                var moon = new THREE.Mesh(geometry, material);  
-//                moon.position.set(3, 5, 0);
-//                scene.add(moon);
-                
-                geometry = new THREE.PlaneGeometry(50, 50, 1, 1);
-                material = new THREE.MeshPhongMaterial( {color:0xCCCCCC,transparent: true,opacity: 0.5});
-                var plane = new THREE.Mesh(geometry, material);
-                plane.rotation.x = -Math.PI/2;
-                plane.position.set (0, 0, 0);
-                scene.add(plane);
-                
+                            
                 // camera controls
-                controls = new THREE.OrbitControls(camera, renderer.domElement);
+                controls = new THREE.OrbitControls(camera);
                 
                 render();
+                
+                 // Axes
+                axes = buildAxes();
+                scene.add( axes );
+                
+                // http://soledadpenades.com/articles/three-js-tutorials/drawing-the-coordinate-axes/
+                function buildAxes() {
+                    var axes = new THREE.Object3D();
+
+                    axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 100, 0, 0 ), 0xFF0000, false ) ); // +X
+                    axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( -100, 0, 0 ), 0x800000, true) ); // -X
+                    axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 100, 0 ), 0x00FF00, false ) ); // +Y
+                    axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, -100, 0 ), 0x008000, true ) ); // -Y
+                    axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, 100 ), 0x0000FF, false ) ); // +Z
+                    axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, -100 ), 0x000080, true ) ); // -Z
+
+                    return axes;
+
+                }
+
+                function buildAxis( src, dst, colorHex, dashed ) {
+                    var geom = new THREE.Geometry(),
+                        mat; 
+
+                    if(dashed) {
+                        mat = new THREE.LineDashedMaterial({ linewidth: 1, color: colorHex, dashSize: 5, gapSize: 5 });
+                    } else {
+                        mat = new THREE.LineBasicMaterial({ linewidth: 1, color: colorHex });
+                    }
+
+                    geom.vertices.push( src.clone() );
+                    geom.vertices.push( dst.clone() );
+
+                    var axis = new THREE.Line( geom, mat );
+
+                    return axis;
+
+                }
+                
             }
             
+            // animations
             function moveCam(){
 
                     var pos1 = new TWEEN.Tween(camera.position).to({z:-200, x: 200}, 8000).easing(TWEEN.Easing.Quadratic.InOut);
@@ -162,6 +193,7 @@
                 controls.update();
                 
                 TWEEN.update();
+                
 			}
 
 		</script>
