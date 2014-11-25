@@ -6,7 +6,6 @@
             body { width: 100%; height: 100%; margin: 0; padding: 0; height: 100%;
 				overflow:hidden;}
             
-            
             a {
                 color: #fff;
                 background: rgba(255, 255, 255, 0.2);
@@ -25,6 +24,13 @@
                 color: #fff;
                 background-color:black;
             }
+            
+            #hover { 
+                position: absolute;
+                top: 0px; width: 300px;
+				padding: 5px;
+                background-color: #faffd5;
+            }
 
         </style>
 	</head>
@@ -39,6 +45,7 @@
             
         </div>
 -->
+        <div id="hover">Hovering over nothing</div>
         
 		<script src="js/three.min.js"></script>
         <script src="js/Detector.js"></script>
@@ -105,7 +112,7 @@
                     return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
                 }
 
-                //draw spheres for each star in the constellation based off csv data, model children
+                //draw spheres for each star in the constellation based off csv data
                 geometry = new THREE.SphereGeometry(1, 30, 30);
                
                 stars = new THREE.Object3D();
@@ -119,8 +126,10 @@
                     star.position.y = parseFloat(starData[i][5]) * 0.8;
                     star.position.z = parseFloat(starData[i][6]) * 0.8;
                     
-                    // for magnitude, the more negative a number, the brighter
-                    var invertedAbsoMag = -(parseFloat(starData[i][3]));
+                    star.name=starData[i][7];
+                    
+                    // for magnitude, the more negative a number, the brighter MAKE NEGATIVE Inverse problem
+                    var invertedAbsoMag = parseFloat(starData[i][3]);
                     
                     // from asbolute magnitude, don't forget to change range values
                     var absoMag = map_range(invertedAbsoMag, -3.297647909, 2.304163211 , 0, 1.5);
@@ -146,18 +155,36 @@
                     var raycaster = projector.pickingRay( mouseVector.clone(), camera ),
                         intersects = raycaster.intersectObjects( stars.children );
 
+                    // return to original color
                     stars.children.forEach(function( star ) {
                         star.material.color.setHex( 0x00ffff );
                     });
-
+                    
+//                    var vector = projector.projectVector(pos.clone(), camera);
+//                            vector.x = (vector.x + 1)/2 * window.innerWidth;
+//                            vector.y = -(vector.y - 1)/2 * window.innerHeight;
+//                    
+//                    var text2 = document.createElement('div');
+//                    text2.style.position = 'absolute';
+//                    //text2.style.zIndex = 1;    // if you still don't see the label, try uncommenting this
+//                    text2.style.width = 100;
+//                    text2.style.height = 100;
+//                    text2.style.backgroundColor = "blue";
+//                    text2.innerHTML = "hi there!";
+//                    text2.style.top = vector.x + 'px';
+//                    text2.style.left = vector.y + 'px';
+//                    document.body.appendChild(text2);            
+                  
 
                     for( var i = 0; i < intersects.length; i++ ) {
                         var intersection = intersects[ i ],
                             obj = intersection.object;
 
-                        obj.material.color.setRGB( 1.0 - i / intersects.length, 0, 0 );
+                        obj.material.color.setHex( 0xff0000 );
+                        
+                        // display name of star
+                        document.getElementById("hover").innerHTML = obj.name;
                     }
-
 
                 }
                             
@@ -187,6 +214,7 @@
 				requestAnimationFrame(render);
 
                 camera.lookAt (scene.position);
+                camera.updateMatrixWorld();
                 
 				renderer.render(scene, camera);
                 controls.update();
