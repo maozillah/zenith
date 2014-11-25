@@ -25,11 +25,13 @@
                 background-color:black;
             }
             
-            #hover { 
+            #starName { 
                 position: absolute;
-                top: 0px; width: 300px;
+                top: 0px; 
+                left: 0px;
 				padding: 5px;
                 background-color: #faffd5;
+                display: none;
             }
 
         </style>
@@ -45,7 +47,7 @@
             
         </div>
 -->
-        <div id="hover">Hovering over nothing</div>
+        <div id="starName">No star hovered</div>
         
 		<script src="js/three.min.js"></script>
         <script src="js/Detector.js"></script>
@@ -56,9 +58,10 @@
 		<script>
             var scene, camera, renderer, axes;
             var projector, mouseVector;
-            var starData, stars;
+            var starData, stars, INTERSECTED;
             var windowx = window.innerWidth;
             var windowy = window.innerHeight;
+ 
             
             $( document ).ready(function() {
                 $.get( "data/constellation_data.csv", function( data ) {
@@ -149,54 +152,50 @@
                 
                 function onMouseMove( e ) {
 		
+                    // label
+                    var label = document.getElementById("starName");
+                    
                     mouseVector.x = 2 * (e.clientX / windowx) - 1;
                     mouseVector.y = 1 - 2 * ( e.clientY / windowy );
 
                     var raycaster = projector.pickingRay( mouseVector.clone(), camera ),
                         intersects = raycaster.intersectObjects( stars.children );
-
-                    // return to original color
-                    stars.children.forEach(function( star ) {
-                        star.material.color.setHex( 0x00ffff );
-                    });
                     
-//                    var vector = projector.projectVector(pos.clone(), camera);
-//                            vector.x = (vector.x + 1)/2 * window.innerWidth;
-//                            vector.y = -(vector.y - 1)/2 * window.innerHeight;
-//                    
-//                    var text2 = document.createElement('div');
-//                    text2.style.position = 'absolute';
-//                    //text2.style.zIndex = 1;    // if you still don't see the label, try uncommenting this
-//                    text2.style.width = 100;
-//                    text2.style.height = 100;
-//                    text2.style.backgroundColor = "blue";
-//                    text2.innerHTML = "hi there!";
-//                    text2.style.top = vector.x + 'px';
-//                    text2.style.left = vector.y + 'px';
-//                    document.body.appendChild(text2);            
-                  
+                    // check if intersecting with star
+                    if ( intersects.length > 0 ) {
+					if ( INTERSECTED != intersects[ 0 ].object ) {
+						if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
 
-                    for( var i = 0; i < intersects.length; i++ ) {
-                        var intersection = intersects[ i ],
-                            obj = intersection.object;
+						INTERSECTED = intersects[ 0 ].object;
+						INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
+                        // yes intersecting do this
+						INTERSECTED.material.emissive.setHex( 0xff0000 );
 
-                        obj.material.color.setHex( 0xff0000 );
+                         // mouse position for label
+                        var x = event.clientX;  
+                        var y = event.clientY; 
                         
-                        // display name of star
-                        document.getElementById("hover").innerHTML = obj.name;
-                    }
+                        label.innerHTML = INTERSECTED.name;
+                        label.style.top = y+20 + 'px';
+                        label.style.left = x+20 + 'px';
+                        label.style.display = "initial";
+					}
+
+				} else {
+					if ( INTERSECTED ) {INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+                                       label.style.display = "none";}
+					INTERSECTED = null;
+				}       
 
                 }
                             
                 // camera controls
                 controls = new THREE.OrbitControls(camera);
-                
                 render();
                 
                  // Axes
                 axes = buildAxes();
                 scene.add( axes );
-                
             }
             
             // animations
@@ -214,6 +213,8 @@
 				requestAnimationFrame(render);
 
                 camera.lookAt (scene.position);
+                
+                //for labels
                 camera.updateMatrixWorld();
                 
 				renderer.render(scene, camera);
