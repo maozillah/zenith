@@ -110,6 +110,7 @@
                 earth.position.set(0, 0, 0);
                 scene.add(earth);
                 
+                
                 // map negative absolute magnitude ranges
                 function map_range(value, low1, high1, low2, high2) {
                     return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
@@ -129,10 +130,12 @@
                     star.position.y = parseFloat(starData[i][5]) * 0.8;
                     star.position.z = parseFloat(starData[i][6]) * 0.8;
                     
-                    star.name=starData[i][7];
+//                    geometry.vertices.push( star.position );
+                    
+                    star.name=starData[i][7] + " " + starData[i][8];
                     
                     // for magnitude, the more negative a number, the brighter MAKE NEGATIVE Inverse problem
-                    var invertedAbsoMag = parseFloat(starData[i][3]);
+                    var invertedAbsoMag = -parseFloat(starData[i][3]);
                     
                     // from asbolute magnitude, don't forget to change range values
                     var absoMag = map_range(invertedAbsoMag, -3.297647909, 2.304163211 , 0, 1.5);
@@ -142,12 +145,24 @@
                     stars.add(star);
                 }
                 
-                // Picking stuff
+                // lines                          
+                
+                material = new THREE.LineBasicMaterial({color: 0x00ffff});
+                geometry = new THREE.Geometry();
+                geometry.vertices.push(
+                    new THREE.Vector3( -10, 0, 0 ),
+                    new THREE.Vector3( 0, 15, 15 ),
+                    new THREE.Vector3( 10, 0, 0 ),
+                    new THREE.Vector3( 15, 10, 0 )
+                );
+                var line = new THREE.Line( geometry, material );
+                scene.add( line );
+                
 
                 projector = new THREE.Projector(); //do i need a variable for this?
                 mouseVector = new THREE.Vector3();
                 
-                // User interaction
+                // On hover
                 window.addEventListener( 'mousemove', onMouseMove, false );
                 
                 function onMouseMove( e ) {
