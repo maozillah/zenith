@@ -107,6 +107,7 @@
                 geometry = new THREE.SphereGeometry(1, 30, 30);
                 material = new THREE.MeshLambertMaterial( {color:0x0000ff});
                 var earth = new THREE.Mesh(geometry, material);  
+                earth.scale.set(0.5,0.5,0.5);
                 earth.position.set(0, 0, 0);
                 scene.add(earth);
                 
@@ -136,10 +137,9 @@
                     star.name=starData[i][7] + " " + starData[i][8];
                     
                     // for magnitude, the more negative a number, the brighter MAKE NEGATIVE Inverse problem
-                    var invertedAbsoMag = -parseFloat(starData[i][3]);
                     
                     // from asbolute magnitude, don't forget to change range values
-                    var absoMag = map_range(invertedAbsoMag, -3.297647909, 2.304163211 , 0, 1.5);
+                    var absoMag = map_range(-parseFloat(starData[i][3]), -3.297647909, 2.304163211 , 0, 1.5) * 0.5;
                     
                     star.scale.set(absoMag,absoMag,absoMag);
                     scene.add( star );
@@ -157,8 +157,13 @@
 //                    new THREE.Vector3( -10, 0, 0 ),
 //                    new THREE.Vector3( 0, 15, 15 ),
 //                    new THREE.Vector3( 10, 0, 0 ),
-//                    new THREE.Vector3( 15, 10, 0 )
+//                    new THREE.Vector3( 15, 10, 0 ),
+//                    new THREE.Vector3( -10, 0, 0 )
 //                );
+//                var linetest = new THREE.Line( geometry, material );
+//                scene.add( linetest );
+                
+                //drawing line from loop
                 var line = new THREE.Line( linegeometry, new THREE.LineBasicMaterial( { color: 0xffffff, opacity: 0.5 } ) );
                 scene.add( line );
                 
