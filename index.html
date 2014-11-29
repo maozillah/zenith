@@ -127,9 +127,9 @@
                     star = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({color:0x00ffff})); 
                     // map magnitude for brightness, parseFloat(starData[i][2])
                     
-                    star.position.x = parseFloat(starData[i][4]) * 0.8; 
-                    star.position.y = parseFloat(starData[i][5]) * 0.8;
-                    star.position.z = parseFloat(starData[i][6]) * 0.8;
+                    star.position.x = parseFloat(starData[i][4] *0.9); 
+                    star.position.y = parseFloat(starData[i][5] *0.9);
+                    star.position.z = parseFloat(starData[i][6] *0.9);
                     
 //                    geometry.vertices.push( star.position );
                     
@@ -166,6 +166,8 @@
                 projector = new THREE.Projector(); //do i need a variable for this?
                 mouseVector = new THREE.Vector3();
                 
+                raycaster = new THREE.Raycaster();
+                
                 // On hover
                 window.addEventListener( 'mousemove', onMouseMove, false );
                 
@@ -176,35 +178,35 @@
                     
                     mouseVector.x = 2 * (e.clientX / windowx) - 1;
                     mouseVector.y = 1 - 2 * ( e.clientY / windowy );
-
-                    var raycaster = projector.pickingRay( mouseVector.clone(), camera ),
-                        intersects = raycaster.intersectObjects( stars.children );
                     
-                    // check if intersecting with star
-                    if ( intersects.length > 0 ) {
-					if ( INTERSECTED != intersects[ 0 ].object ) {
-						if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
-
-						INTERSECTED = intersects[ 0 ].object;
-						INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
-                        // yes intersecting do this
-						INTERSECTED.material.emissive.setHex( 0xff0000 );
-
-                         // mouse position for label
-                        var x = event.clientX;  
-                        var y = event.clientY; 
-                        
-                        label.innerHTML = INTERSECTED.name;
-                        label.style.top = y+20 + 'px';
-                        label.style.left = x+20 + 'px';
-                        label.style.display = "initial";
-					}
-
-				} else {
-					if ( INTERSECTED ) {INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
-                                       label.style.display = "none";}
-					INTERSECTED = null;
-				}       
+//                    var raycaster = projector.pickingRay( mouseVector.clone(), camera ),
+//                        intersects = raycaster.intersectObjects( scene.children );
+//                    
+//                    // check if intersecting with star
+//                    if ( intersects.length > 0 ) {
+//					if ( INTERSECTED != intersects[ 0 ].object ) {
+//						if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+//
+//						INTERSECTED = intersects[ 0 ].object;
+//						INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
+//                        // yes intersecting do this
+//						INTERSECTED.material.emissive.setHex( 0xff0000 );
+//
+//                         // mouse position for label
+//                        var x = event.clientX;  
+//                        var y = event.clientY; 
+//                        
+//                        label.innerHTML = INTERSECTED.name;
+//                        label.style.top = y+20 + 'px';
+//                        label.style.left = x+20 + 'px';
+//                        label.style.display = "initial";
+//					}
+//
+//				} else {
+//					if ( INTERSECTED ) {INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+//                                       label.style.display = "none";}
+//					INTERSECTED = null;
+//				}       
 
                 }
                             
