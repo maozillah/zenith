@@ -119,8 +119,9 @@
                 //draw spheres for each star in the constellation based off csv data
                 geometry = new THREE.SphereGeometry(1, 30, 30);
                
-                stars = new THREE.Object3D();
-                scene.add( stars );
+//                stars = new THREE.Object3D();
+//                scene.add( stars );
+                var linegeometry = new THREE.Geometry();
                         
                 for (var i = 1; i < starData.length; i++) {
                     star = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({color:0x00ffff})); 
@@ -141,21 +142,24 @@
                     var absoMag = map_range(invertedAbsoMag, -3.297647909, 2.304163211 , 0, 1.5);
                     
                     star.scale.set(absoMag,absoMag,absoMag);
+                    scene.add( star );
+                    
+                    linegeometry.vertices.push( star.position );
 
-                    stars.add(star);
+//                    stars.add(star);
                 }
                 
                 // lines                          
                 
-                material = new THREE.LineBasicMaterial({color: 0x00ffff});
-                geometry = new THREE.Geometry();
-                geometry.vertices.push(
-                    new THREE.Vector3( -10, 0, 0 ),
-                    new THREE.Vector3( 0, 15, 15 ),
-                    new THREE.Vector3( 10, 0, 0 ),
-                    new THREE.Vector3( 15, 10, 0 )
-                );
-                var line = new THREE.Line( geometry, material );
+//                material = new THREE.LineBasicMaterial({color: 0x00ffff});
+//                geometry = new THREE.Geometry();
+//                geometry.vertices.push(
+//                    new THREE.Vector3( -10, 0, 0 ),
+//                    new THREE.Vector3( 0, 15, 15 ),
+//                    new THREE.Vector3( 10, 0, 0 ),
+//                    new THREE.Vector3( 15, 10, 0 )
+//                );
+                var line = new THREE.Line( linegeometry, new THREE.LineBasicMaterial( { color: 0xffffff, opacity: 0.5 } ) );
                 scene.add( line );
                 
 
