@@ -58,7 +58,7 @@
 		<script>
             var scene, camera, renderer, axes;
             var projector, mouseVector;
-            var starData, stars, INTERSECTED;
+            var starData, lineData, stars, INTERSECTED;
             var windowx = window.innerWidth;
             var windowy = window.innerHeight;
             var positionScale = 0.9;
@@ -67,17 +67,23 @@
             $( document ).ready(function() {
                 $.get( "data/constellation_data.csv", function( data ) {
                     starData = $.csv.toArrays(data);
-                    console.log("csv ready!");
+                    console.log("constellation data ready!");
                     
-                    // splashscreen
-                    $('.explore').click(function () {
-                        $(this).parent('#splashscreen').fadeOut(500);
+                    $.get( "data/line.csv", function( data ) {
+                    lineData = $.csv.toArrays(data);
+                    console.log("line data ready!");
+                        
+                        init();
                     });
                     
-                    //starData[1][7]
-                    
-                    init();
                 });
+                                
+             // splashscreen
+                $('.explore').click(function () {
+                    $(this).parent('#splashscreen').fadeOut(500);
+                });       
+                    //starData[1][7]
+
             });
 
             function init(){
@@ -144,35 +150,37 @@
                     star.scale.set(absoMag,absoMag,absoMag);
                     
                     scene.add( star ); 
-
+ 
 //                    stars.add(star);
                 }
                 
                 // draw lines for constellations
                 
-                function drawLines(constellation) {
-                    
-                var linegeometry = new THREE.Geometry();
-                material = new THREE.LineBasicMaterial({color: 0x00ffff});
+    var linegeometry = new THREE.Geometry();
+    material = new THREE.LineBasicMaterial({color: 0x00ffff});
 
-                for (var i = 1; i < starData.length; i++) {
-                    star.const = starData[i][8]; //constellation name
+    for (var j = 0; j < lineData.length; j++) {
+    	
+    	for (var h = 1; h < lineData[j].length; h++) {
+    		linegeometry.hip = lineData[j][h];
 
-                    if (star.const == constellation) {
-                        star.position.x = parseFloat(starData[i][4] *positionScale); 
-                        star.position.y = parseFloat(starData[i][5] *positionScale);
-                        star.position.z = parseFloat(starData[i][6] *positionScale);
+    		for (var i = 1; i < starData.length; i++) {
+        	star.hip = starData[i][0]; //constellation name
 
-                        linegeometry.vertices.push( star.position.clone() );
-                    }
-                }
+		        if (star.hip == linegeometry.hip) {
+		            star.position.x = parseFloat(starData[i][4] *positionScale); 
+		            star.position.y = parseFloat(starData[i][5] *positionScale);
+		            star.position.z = parseFloat(starData[i][6] *positionScale);
 
-                var lines = new THREE.Line( linegeometry, material );
-                scene.add( lines );
-                }
-                                
-                drawLines("Aries");
-                drawLines("Capricorn");
+		            linegeometry.vertices.push( star.position.clone() );
+		        }
+    		}
+    	}
+  		
+    }
+
+    var lines = new THREE.Line( linegeometry, material );
+    scene.add( lines );
 
         
                 // raycasting
