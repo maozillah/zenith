@@ -127,8 +127,8 @@
                 //draw spheres for each star in the constellation based off csv data
                 geometry = new THREE.SphereGeometry(1, 30, 30);
                
-//                stars = new THREE.Object3D();
-//                scene.add( stars );
+                stars = new THREE.Object3D();
+                scene.add( stars );
                         
                 for (var i = 1; i < starData.length; i++) {
                     star = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({color:0x00ffff})); 
@@ -149,9 +149,9 @@
                     
                     star.scale.set(absoMag,absoMag,absoMag);
                     
-                    scene.add( star ); 
+//                    scene.add( star ); 
  
-//                    stars.add(star);
+                    stars.add(star);
                 }
                 
                 // draw lines for constellations
@@ -190,9 +190,7 @@
                 projector = new THREE.Projector(); //do i need a variable for this?
                 mouseVector = new THREE.Vector3();
                 
-                raycaster = new THREE.Raycaster();
-                
-                // On hover
+                // User interaction
                 window.addEventListener( 'mousemove', onMouseMove, false );
                 
                 function onMouseMove( e ) {
@@ -202,35 +200,35 @@
                     
                     mouseVector.x = 2 * (e.clientX / windowx) - 1;
                     mouseVector.y = 1 - 2 * ( e.clientY / windowy );
+
+                    var raycaster = projector.pickingRay( mouseVector.clone(), camera ),
+                        intersects = raycaster.intersectObjects( stars.children );
                     
-//                    var raycaster = projector.pickingRay( mouseVector.clone(), camera ),
-//                        intersects = raycaster.intersectObjects( scene.children );
-//                    
-//                    // check if intersecting with star
-//                    if ( intersects.length > 0 ) {
-//					if ( INTERSECTED != intersects[ 0 ].object ) {
-//						if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
-//
-//						INTERSECTED = intersects[ 0 ].object;
-//						INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
-//                        // yes intersecting do this
-//						INTERSECTED.material.emissive.setHex( 0xff0000 );
-//
-//                         // mouse position for label
-//                        var x = event.clientX;  
-//                        var y = event.clientY; 
-//                        
-//                        label.innerHTML = INTERSECTED.name;
-//                        label.style.top = y+20 + 'px';
-//                        label.style.left = x+20 + 'px';
-//                        label.style.display = "initial";
-//					}
-//
-//				} else {
-//					if ( INTERSECTED ) {INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
-//                                       label.style.display = "none";}
-//					INTERSECTED = null;
-//				}       
+                    // check if intersecting with star
+                    if ( intersects.length > 0 ) {
+					if ( INTERSECTED != intersects[ 0 ].object ) {
+						if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+
+						INTERSECTED = intersects[ 0 ].object;
+						INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
+                        // yes intersecting do this
+						INTERSECTED.material.emissive.setHex( 0xff0000 );
+
+                         // mouse position for label
+                        var x = event.clientX;  
+                        var y = event.clientY; 
+                        
+                        label.innerHTML = INTERSECTED.name;
+                        label.style.top = y+20 + 'px';
+                        label.style.left = x+20 + 'px';
+                        label.style.display = "initial";
+					}
+
+				} else {
+					if ( INTERSECTED ) {INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+                                       label.style.display = "none";}
+					INTERSECTED = null;
+				}       
 
                 }
                             
