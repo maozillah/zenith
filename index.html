@@ -33,6 +33,15 @@
                 background-color: #faffd5;
                 display: none;
             }
+            
+            #lineName { 
+                position: absolute;
+                top: 0px; 
+                left: 0px;
+				padding: 5px;
+                background-color: #faffd5;
+                display: none;
+            }
 
         </style>
 	</head>
@@ -48,6 +57,7 @@
         </div>
 -->
         <div id="starName">No star hovered</div>
+        <div id="lineName">No constellation hovered</div>
         
 		<script src="js/three.min.js"></script>
         <script src="js/Detector.js"></script>
@@ -143,8 +153,8 @@
                     star.position.y = parseFloat(starData[i][5] *positionScale);
                     star.position.z = parseFloat(starData[i][6] *positionScale);
                     
-                    
-                    star.name=starData[i][7] + " " + starData[i][8];
+                    star.name=starData[i][7];
+//                    star.name=starData[i][7] + " " + starData[i][8];
 
                     
                     // for magnitude, the more negative a number, the brighter MAKE NEGATIVE Inverse problem
@@ -163,7 +173,7 @@
                 sceneLines = new THREE.Object3D();
                 scene.add(sceneLines);
                 
-                function drawLines(constellation) {                   
+                function drawLines(constellation, constName) {                   
                     var linegeometry = new THREE.Geometry();
                     material = new THREE.LineBasicMaterial({color: 0x00ffff});
 
@@ -184,14 +194,13 @@
                 }
 
                 var lines = new THREE.Line( linegeometry, material );
+                lines.name = constName;
                  sceneLines.add( lines );
 
                 }
                 
-                
-                
-                drawLines(0); // aries
-                drawLines(1); //capricorn
+                drawLines(0, "Aries"); // aries
+                drawLines(1, "Capricorn"); //capricorn
 
         
                 // raycasting
@@ -209,14 +218,17 @@
                     mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
 		
                     // label
-                    var label = document.getElementById("starName");
+                    var starlabel = document.getElementById("starName");
 
                     var vector = new THREE.Vector3( mouse.x, mouse.y, 1 ).unproject( camera );
 //                    projector.unproject( vector, camera );
 
                     raycaster.set( camera.position, vector.sub( camera.position ).normalize() );
                     var intersects = raycaster.intersectObjects( stars.children );
-                    var lineintersects = raycaster.intersectObjects( sceneLines.children, true);
+                
+                     // mouse position for label
+                    var x = event.clientX;  
+                    var y = event.clientY; 
                     
                     // check if intersecting with star
                     if ( intersects.length > 0 ) {
@@ -228,21 +240,21 @@
                             // yes intersecting do this
                             INTERSECTED.material.emissive.setHex( 0xff0000 );
 
-                             // mouse position for label
-                            var x = event.clientX;  
-                            var y = event.clientY; 
-
-                            label.innerHTML = INTERSECTED.name;
-                            label.style.top = y+20 + 'px';
-                            label.style.left = x+20 + 'px';
-                            label.style.display = "initial";
+                            starlabel.innerHTML = INTERSECTED.name;
+                            starlabel.style.top = y+20 + 'px';
+                            starlabel.style.left = x+20 + 'px';
+                            starlabel.style.display = "initial";
                         }
 
                     } else {
                         if ( INTERSECTED ) {INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
-                                           label.style.display = "none";}
+                                           starlabel.style.display = "none";}
                         INTERSECTED = null;
                     }       
+                    
+                    //line variables
+                    var linelabel = document.getElementById("lineName");
+                    var lineintersects = raycaster.intersectObjects( sceneLines.children, true);
                     
                     //check if intersecting with line
                     if ( lineintersects.length > 0 ) {
@@ -254,13 +266,18 @@
                             currentIntersected.currentHex = currentIntersected.material.color.getHex();
 
                              currentIntersected.material.color.setHex( 0xff0000 );
-
+                            
+                            linelabel.innerHTML = currentIntersected.name;
+                            linelabel.style.top = y-50 + 'px';
+                            linelabel.style.left = x-50 + 'px';
+                            linelabel.style.display = "initial";
+                            
                         }
 
                     } else {
 
-                        if ( currentIntersected ) currentIntersected.material.color.setHex( currentIntersected.currentHex );
-
+                        if ( currentIntersected ) {currentIntersected.material.color.setHex( currentIntersected.currentHex );
+                                                   linelabel.style.display = "none";}
                        currentIntersected = null;
 
                     } 
