@@ -118,20 +118,57 @@
                 
                 //let there be light
                 
-                         var light	= new THREE.AmbientLight( 0x888888 );
-	scene.add( light );
+                var light	= new THREE.AmbientLight( 0x888888 );
+	           scene.add( light );
                 
                 var light = new THREE.SpotLight( 0xCCCCCC, 1, 0, Math.PI, 1);
                 light.position.set(20,50,50);
                 scene.add(light);
                 
                 // earth woo
-                geometry = new THREE.SphereGeometry(1, 30, 30);
-                material = new THREE.MeshLambertMaterial( {color:0x0000ff});
+                geometry = new THREE.SphereGeometry(0.5, 32, 32);
+                material  = new THREE.MeshPhongMaterial();
                 var earth = new THREE.Mesh(geometry, material);  
                 earth.scale.set(0.5,0.5,0.5);
                 earth.position.set(0, 0, 0);
+                
+                 material.map    = THREE.ImageUtils.loadTexture('imgs/earthmap.jpg'); // map color texture to sphere
+                
+                //map bump
+                material.bumpMap    = THREE.ImageUtils.loadTexture('imgs/earthbump1k.jpg'); 
+                material.bumpScale = 0.08;
+                
+                //specular light, only shiny things are water
+                material.specularMap    = THREE.ImageUtils.loadTexture('imgs/earthspec1k.jpg');
+                material.specular  = new THREE.Color('grey');
+                
                 scene.add(earth);
+                                
+                var geometry   = new THREE.SphereGeometry(0.51, 32, 32);
+                var material  = new THREE.MeshPhongMaterial({
+                   // map     : new THREE.Texture(canvasCloud), //load texture from?
+                  map     : THREE.ImageUtils.loadTexture('imgs/earthcloudmap.png'),
+                  side        : THREE.DoubleSide,
+                  opacity     : 0.8,
+                  transparent : true,
+                  depthWrite  : false,
+                });
+                var cloudMesh = new THREE.Mesh(geometry, material);
+                earth.add(cloudMesh);
+                
+                
+                //inside sphere of stars
+
+                var geometry  = new THREE.SphereGeometry(90, 32, 32);
+                // create the material, using a texture of startfield
+                var material  = new THREE.MeshBasicMaterial();
+                var galaxy = new THREE.Mesh(geometry, material);
+                
+                material.map   = THREE.ImageUtils.loadTexture('imgs/galaxy.png');
+                material.side  = THREE.BackSide; //inside of sphere
+                // create the mesh based on geometry and material
+                var mesh  = new THREE.Mesh(geometry, material);
+                scene.add(galaxy);
                 
                 
                 // map negative absolute magnitude ranges
