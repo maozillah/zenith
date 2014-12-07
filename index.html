@@ -57,8 +57,12 @@
         <script src="js/tween.min.js"></script>
 		<script>
             var scene, camera, renderer, axes;
-            var projector, mouseVector;
-            var starData, lineData, stars, INTERSECTED;
+            
+            //raycasting
+            var projector, raycaster;
+            var mouse = new THREE.Vector2(), INTERSECTED;
+            
+            var starData, lineData, stars;
             var windowx = window.innerWidth;
             var windowy = window.innerHeight;
             var positionScale = 0.9;
@@ -187,22 +191,26 @@
         
                 // raycasting
 
-                projector = new THREE.Projector(); //do i need a variable for this?
-                mouseVector = new THREE.Vector3();
+                projector = new THREE.Projector();
+				raycaster = new THREE.Raycaster();
                 
                 // User interaction
-                window.addEventListener( 'mousemove', onMouseMove, false );
+                document.addEventListener( 'mousemove', onDocumentMouseMove, false );
                 
-                function onMouseMove( e ) {
+                function onDocumentMouseMove( event ) {
+                    
+                    event.preventDefault();
+                    mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+                    mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
 		
                     // label
                     var label = document.getElementById("starName");
-                    
-                    mouseVector.x = 2 * (e.clientX / windowx) - 1;
-                    mouseVector.y = 1 - 2 * ( e.clientY / windowy );
 
-                    var raycaster = projector.pickingRay( mouseVector.clone(), camera ),
-                        intersects = raycaster.intersectObjects( stars.children );
+                    var vector = new THREE.Vector3( mouse.x, mouse.y, 1 ).unproject( camera );
+//                    projector.unproject( vector, camera );
+
+                    raycaster.set( camera.position, vector.sub( camera.position ).normalize() );
+                    var intersects = raycaster.intersectObjects( stars.children );
                     
                     // check if intersecting with star
                     if ( intersects.length > 0 ) {
