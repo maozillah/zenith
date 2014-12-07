@@ -60,7 +60,8 @@
             
             //raycasting
             var projector, raycaster;
-            var mouse = new THREE.Vector2(), INTERSECTED;
+            var mouse = new THREE.Vector2(), INTERSECTED, currentIntersected;
+            var sceneLines;
             
             var starData, lineData, stars;
             var windowx = window.innerWidth;
@@ -159,6 +160,8 @@
                 }
                 
                 // draw lines for constellations
+                sceneLines = new THREE.Object3D();
+                scene.add(sceneLines);
                 
                 function drawLines(constellation) {                   
                     var linegeometry = new THREE.Geometry();
@@ -181,9 +184,11 @@
                 }
 
                 var lines = new THREE.Line( linegeometry, material );
-                scene.add( lines );
+                 sceneLines.add( lines );
 
                 }
+                
+                
                 
                 drawLines(0); // aries
                 drawLines(1); //capricorn
@@ -211,32 +216,54 @@
 
                     raycaster.set( camera.position, vector.sub( camera.position ).normalize() );
                     var intersects = raycaster.intersectObjects( stars.children );
+                    var lineintersects = raycaster.intersectObjects( sceneLines.children, true);
                     
                     // check if intersecting with star
                     if ( intersects.length > 0 ) {
-					if ( INTERSECTED != intersects[ 0 ].object ) {
-						if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+                        if ( INTERSECTED != intersects[ 0 ].object ) {
+                            if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
 
-						INTERSECTED = intersects[ 0 ].object;
-						INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
-                        // yes intersecting do this
-						INTERSECTED.material.emissive.setHex( 0xff0000 );
+                            INTERSECTED = intersects[ 0 ].object;
+                            INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
+                            // yes intersecting do this
+                            INTERSECTED.material.emissive.setHex( 0xff0000 );
 
-                         // mouse position for label
-                        var x = event.clientX;  
-                        var y = event.clientY; 
-                        
-                        label.innerHTML = INTERSECTED.name;
-                        label.style.top = y+20 + 'px';
-                        label.style.left = x+20 + 'px';
-                        label.style.display = "initial";
-					}
+                             // mouse position for label
+                            var x = event.clientX;  
+                            var y = event.clientY; 
 
-				} else {
-					if ( INTERSECTED ) {INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
-                                       label.style.display = "none";}
-					INTERSECTED = null;
-				}       
+                            label.innerHTML = INTERSECTED.name;
+                            label.style.top = y+20 + 'px';
+                            label.style.left = x+20 + 'px';
+                            label.style.display = "initial";
+                        }
+
+                    } else {
+                        if ( INTERSECTED ) {INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+                                           label.style.display = "none";}
+                        INTERSECTED = null;
+                    }       
+                    
+                    //check if intersecting with line
+                    if ( lineintersects.length > 0 ) {
+
+                        if ( lineintersects[ 0 ].object != currentIntersected ) {
+
+                            if ( currentIntersected ) currentIntersected.material.color.setHex( currentIntersected.currentHex );
+                            currentIntersected = lineintersects[ 0 ].object;
+                            currentIntersected.currentHex = currentIntersected.material.color.getHex();
+
+                             currentIntersected.material.color.setHex( 0xff0000 );
+
+                        }
+
+                    } else {
+
+                        if ( currentIntersected ) currentIntersected.material.color.setHex( currentIntersected.currentHex );
+
+                       currentIntersected = null;
+
+                    } 
 
                 }
                             
