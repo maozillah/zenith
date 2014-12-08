@@ -2,7 +2,7 @@
 	<head>
 		<title>zenith</title>
 		<style>
-            canvas { width: 100%; height: 100% }
+
             body { width: 100%; height: 100%; margin: 0; padding: 0; height: 100%;
 				overflow:hidden;}
             
@@ -13,6 +13,7 @@
                 padding: 15px;
                 border-radius: 7px;
                 text-align: center;
+                display: none;
             }
             
             #splashscreen {
@@ -56,13 +57,16 @@
             
         </div>
 -->
+        <a href="#" class="modal">Click Here</a>
+        
         <div id="starName">No star hovered</div>
         <div id="lineName">No constellation hovered</div>
         
 		<script src="js/three.min.js"></script>
         <script src="js/Detector.js"></script>
         <script src="js/OrbitControls.js"></script>
-        <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script> <!-- neccessary or not to pull in this library? -->
+        <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script> 
+        <script src="js/jquerymodal.js"></script>
         <script src="js/jquery-csv.min.js"></script>
         <script src="js/tween.min.js"></script>
 		<script>
@@ -89,6 +93,14 @@
                     console.log("line data ready!");
                         
                         init();
+                    });
+                    
+                    $('.modal').paulund_modal_box({
+                        title:'Second Title Box',
+                        description:'Custom description for box <br/><br/>Quisque sodales odio nec dolor porta sed laoreet mauris pretium. Aenean id mauris ligula, semper pulvinar dolor. Suspendisse rutrum, libero eu condimentum porta, mauris mauris semper augue, ut tempor nunc arcu vel ligula. Quisque orci eros, consequat vel iaculis eget, blandit bibendum est. Morbi ac tellus dui. Nullam eget eros et lectus dignissim placerat. Nulla facilisi. Ut congue posuere vulputate.'
+                        ,
+                        height: '500',
+                        width: '800'
                     });
                     
                 });
@@ -377,7 +389,7 @@
 
                             currentIntersected = lineintersects[ 0 ].object;
                             console.log(currentIntersected.name);
-                            
+                            $('.modal').click();
                         }
 
                     } else {
