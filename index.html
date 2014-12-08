@@ -186,13 +186,13 @@
                 var spriteMaterial = new THREE.SpriteMaterial( 
                 { 
                     map: new THREE.ImageUtils.loadTexture( 'imgs/glow.png' ), 
-                    color: 0xffffff, transparent: false, blending: THREE.AdditiveBlending, opacity : 0.5,
+                    color: 0xCCFFFF, transparent: false, blending: THREE.AdditiveBlending
                 });
                         
                 for (var i = 1; i < starData.length; i++) {
                     var sprite = new THREE.Sprite( spriteMaterial );
                     
-                    star = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({color:0x00ffff})); 
+                    star = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({color:0x99FFCC, transparent: true, opacity : 0.5})); 
                     // map magnitude for brightness, parseFloat(starData[i][2])
                     
                     star.position.x = parseFloat(starData[i][4] *positionScale); 
@@ -287,7 +287,7 @@
                             INTERSECTED = intersects[ 0 ].object;
                             INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
                             // yes intersecting do this
-                            INTERSECTED.material.emissive.setHex( 0xff0000 );
+                            INTERSECTED.material.opacity= 0.9;
 
                             starlabel.innerHTML = INTERSECTED.name;
                             starlabel.style.top = y+20 + 'px';
@@ -296,7 +296,7 @@
                         }
 
                     } else {
-                        if ( INTERSECTED ) {INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+                        if ( INTERSECTED ) {INTERSECTED.material.opacity= 0.5;
                                            starlabel.style.display = "none";}
                         INTERSECTED = null;
                     }       
@@ -332,6 +332,7 @@
                             
                 // camera controls
                 controls = new THREE.OrbitControls(camera);
+                controls.zoomSpeed = 0.1;
                 render();
                 
                  // Axes
