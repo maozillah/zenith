@@ -71,7 +71,7 @@
             //raycasting
             var projector, raycaster;
             var mouse = new THREE.Vector2(), INTERSECTED, currentIntersected;
-            var sceneLines;
+            var sceneLines, intLines;
             
             var starData, lineData, stars, outerGlow;
             var windowx = window.innerWidth;
@@ -222,6 +222,8 @@
                 sceneLines = new THREE.Object3D();
                 scene.add(sceneLines);
                 
+                intLines = new THREE.Object3D();
+                
                 function drawLines(constellation, constName) {                   
                     var linegeometry = new THREE.Geometry();
                     material = new THREE.LineBasicMaterial({color: 0xffffff, transparent: true, opacity : 0.2});
@@ -243,8 +245,11 @@
                 }
 
                 var lines = new THREE.Line( linegeometry, material );
+                var lines2 = new THREE.Line( linegeometry, material );
                 lines.name = constName;
-                 sceneLines.add( lines );
+                lines2.name = constName;
+                sceneLines.add( lines );
+                intLines.add( lines2 );
 
                 }
                 
@@ -344,21 +349,15 @@
                 mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
                 mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
                 
-                var vector1 = new THREE.Vector3( mouse.x, mouse.y, 1 ).unproject( camera );
-                raycaster.set( camera.position, vector1.sub( camera.position ).normalize() );
-                var intersects1 = raycaster.intersectObjects( outerGlow.children );
+                var vector = new THREE.Vector3( mouse.x, mouse.y, 1 ).unproject( camera );
+                raycaster.set( camera.position, vector.sub( camera.position ).normalize() );
+                var intersects = raycaster.intersectObjects( outerGlow.children );
                 
                 // check if intersecting with star
-                    if ( intersects1.length > 0 ) {
-                        if ( INTERSECTED != intersects1[ 0 ].object ) {
-//                            if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
-
-                            INTERSECTED = intersects1[ 0 ].object;
-//                            INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
-                            // yes intersecting do this
+                    if ( intersects.length > 0 ) {
+                        if ( INTERSECTED != intersects[ 0 ].object ) {
+                            INTERSECTED = intersects[ 0 ].object;
                             console.log(INTERSECTED.name);
-
-                            
                         }
 
                     } else {
@@ -368,7 +367,26 @@
                         INTERSECTED = null;
                     }     
                 
-//                console.log("mouseclick detected");
+                // check if intersecting with lines
+                var lineintersects = raycaster.intersectObjects( intLines.children, true);
+                    
+                    //check if intersecting with line
+                    if ( lineintersects.length > 0 ) {
+
+                        if ( lineintersects[ 0 ].object != currentIntersected ) {
+
+                            currentIntersected = lineintersects[ 0 ].object;
+                            console.log(currentIntersected.name);
+                            
+                        }
+
+                    } else {
+
+//                        if ( currentIntersected ) {currentIntersected.material.opacity= 0.2;
+//                                                   linelabel.style.display = "none";}
+                       currentIntersected = null;
+
+                    } 
             }
             
             // animations
