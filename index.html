@@ -6,13 +6,29 @@
             body { width: 100%; height: 100%; margin: 0; padding: 0; height: 100%;
 				overflow:hidden;}
             
+            container{
+                position: absolute;
+                top: 0;
+                display: block;
+                max-width: 960px;
+                margin: 0 auto;
+                padding: 50px 0 0 50px;
+                height: 100%;
+                min-height: 10em;
+                display: table-cell;
+                vertical-align: middle;
+            }
+            
             a {
                 color: #fff;
                 background: rgba(255, 255, 255, 0.2);
                 text-decoration: none;
                 padding: 15px;
                 border-radius: 7px;
-                text-align: center;
+                text-align: center; 
+            }
+            
+            .modal {
                 display: none;
             }
             
@@ -57,8 +73,14 @@
             
         </div>
 -->
-        <a href="#" class="Aries">Aries</a>
-        <a href="#" class="Capricorn">Capricorn</a>
+        
+        <container>
+           <a href="#" class="info"> Zenith ?</a>
+            
+        </container>
+        
+        <a href="#" class="Aries modal">Aries</a>
+        <a href="#" class="Capricorn modal">Capricorn</a>
         
         <div id="starName">No star hovered</div>
         <div id="lineName">No constellation hovered</div>
@@ -68,6 +90,7 @@
         <script src="js/OrbitControls.js"></script>
         <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script> 
         <script src="js/jquerymodal.js"></script>
+        <script src='js/THREEx.WindowResize.js'></script>
         <script src="js/jquery-csv.min.js"></script>
         <script src="js/tween.min.js"></script>
 		<script>
@@ -94,6 +117,14 @@
                     console.log("line data ready!");
                         
                         init();
+                    });
+                    
+                    $('.info').paulund_modal_box({
+                        title:'Zenith',
+                        description:"blahblahcredits"
+                        ,
+                        height: '500',
+                        width: '800'
                     });
                     
                     $('.Aries').paulund_modal_box({
@@ -413,6 +444,7 @@
                 //for labels
                 camera.updateMatrixWorld();
                 
+                THREEx.WindowResize(renderer, camera);
 				renderer.render(scene, camera);
                 controls.update();
                 
