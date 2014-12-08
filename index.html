@@ -310,11 +310,8 @@
 
                         if ( lineintersects[ 0 ].object != currentIntersected ) {
 
-                            if ( currentIntersected ) currentIntersected.material.color.setHex( currentIntersected.currentHex );
                             currentIntersected = lineintersects[ 0 ].object;
-                            currentIntersected.currentHex = currentIntersected.material.color.getHex();
-
-                             currentIntersected.material.color.setHex( 0xff0000 );
+                            currentIntersected.material.opacity= 0.6;
                             
                             linelabel.innerHTML = currentIntersected.name;
                             linelabel.style.top = y-50 + 'px';
@@ -325,7 +322,7 @@
 
                     } else {
 
-                        if ( currentIntersected ) {currentIntersected.material.color.setHex( currentIntersected.currentHex );
+                        if ( currentIntersected ) {currentIntersected.material.opacity= 0.2;
                                                    linelabel.style.display = "none";}
                        currentIntersected = null;
 
