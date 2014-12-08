@@ -57,7 +57,8 @@
             
         </div>
 -->
-        <a href="#" class="modal">Click Here</a>
+        <a href="#" class="Aries">Aries</a>
+        <a href="#" class="Capricorn">Capricorn</a>
         
         <div id="starName">No star hovered</div>
         <div id="lineName">No constellation hovered</div>
@@ -95,9 +96,17 @@
                         init();
                     });
                     
-                    $('.modal').paulund_modal_box({
-                        title:'Second Title Box',
-                        description:'Custom description for box <br/><br/>Quisque sodales odio nec dolor porta sed laoreet mauris pretium. Aenean id mauris ligula, semper pulvinar dolor. Suspendisse rutrum, libero eu condimentum porta, mauris mauris semper augue, ut tempor nunc arcu vel ligula. Quisque orci eros, consequat vel iaculis eget, blandit bibendum est. Morbi ac tellus dui. Nullam eget eros et lectus dignissim placerat. Nulla facilisi. Ut congue posuere vulputate.'
+                    $('.Aries').paulund_modal_box({
+                        title:'Aries - The Ram <br/> March 21 - April 19',
+                        description:"In Greek mythology, Aries represents the ram whose fleece was sought by Jason and the Argonauts. When King Athamus of Boetia took a second wife, Ino, she was resentful of his existing children, especially his son, Phrixus, and she wanted him sacrificed. Zeus responded to the pleadings of Phrixus' mother, Nephele, by sending a golden ram to save Phrixus and his sister Helle. Helle did not survive but Phrixus did and sacrificed the ram to Zeus and gave its golden fleece to King Aettes. The fleece was eventually stolen by Jason."
+                        ,
+                        height: '500',
+                        width: '800'
+                    });
+                    
+                    $('.Capricorn').paulund_modal_box({
+                        title:'Capricorn - The Sea Goat <br/> December 22 - January 19',
+                        description:"The constellation has its roots in the cultures of Sumeria — which identified it with a mythical figure that was half goat and half fish — and Babylonia, which portrayed it as a goat-human hybrid. <br/>The Greeks associate the constellation with Pan, the god of nature. Part of Pan’s lore was that he helped Zeus fight the Titans to earn his spot in the heavens. He escaped the monster Typhon by jumping into Nile, but only half of his body was submerged, so he was a fish in the part of his body that remained underwater. Other spins on the tale have the constellation associated with Amalthaea, the mythical goat that acted as a foster mother to Zeus as an infant."
                         ,
                         height: '500',
                         width: '800'
@@ -365,20 +374,6 @@
                 raycaster.set( camera.position, vector.sub( camera.position ).normalize() );
                 var intersects = raycaster.intersectObjects( outerGlow.children );
                 
-                // check if intersecting with star
-                    if ( intersects.length > 0 ) {
-                        if ( INTERSECTED != intersects[ 0 ].object ) {
-                            INTERSECTED = intersects[ 0 ].object;
-                            console.log(INTERSECTED.name);
-                        }
-
-                    } else {
-//                        if ( INTERSECTED ) {INTERSECTED.material.opacity= 0.5;
-//                                           starlabel.style.display = "none";}
-                         if ( INTERSECTED ) {}
-                        INTERSECTED = null;
-                    }     
-                
                 // check if intersecting with lines
                 var lineintersects = raycaster.intersectObjects( intLines.children, true);
                     
@@ -388,14 +383,12 @@
                         if ( lineintersects[ 0 ].object != currentIntersected ) {
 
                             currentIntersected = lineintersects[ 0 ].object;
-                            console.log(currentIntersected.name);
-                            $('.modal').click();
+
+                            // trigger modal
+                            $('.'+currentIntersected.name).click();
                         }
 
                     } else {
-
-//                        if ( currentIntersected ) {currentIntersected.material.opacity= 0.2;
-//                                                   linelabel.style.display = "none";}
                        currentIntersected = null;
 
                     } 
