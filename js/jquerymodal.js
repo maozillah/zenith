@@ -99,7 +99,7 @@
 			 $('.paulund_modal_close').click(function(){
 				$(this).parent().fadeOut().remove();
 				$('.paulund_block_page').fadeOut().remove();	
-                 setTimeout('clickable=true', 1000);
+                 setTimeout('clickable=true', 500);
 			 });
 		}
 
