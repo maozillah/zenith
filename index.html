@@ -1,28 +1,117 @@
 <html>
 	<head>
 		<title>zenith</title>
+        <link href='http://fonts.googleapis.com/css?family=Roboto:500,300' rel='stylesheet' type='text/css'>
 		<style>
-            canvas { width: 100%; height: 100% }
-            body { width: 100%; height: 100%; margin: 0; padding: 0; height: 100%;
-				overflow:hidden;}
             
+            html * {
+                font-size: 12pt;
+            }
+            body { width: 100%; height: 100%; margin: 0; padding: 0; height: 100%;
+				overflow:hidden;
+                font-size:1em;
+               font-family: 'Roboto', sans-serif;
+                font-weight: 300;
+                text-transform: uppercase;
+                letter-spacing: 0.054em;
+                line-height: 1.8em;
+            }
+            
+            @font-face {
+                font-family: 'ChaletComprimeCologneSeventy';
+                src: url('fonts/chalet.eot');
+                src: url('fonts/chalet.eot') format('embedded-opentype'),
+                     url('fonts/chalet.woff2') format('woff2'),
+                     url('fonts/chalet.woff') format('woff'),
+                     url('fonts/chalet.ttf') format('truetype'),
+                     url('fonts/chalet.svg#ChaletComprimeCologneSeventy') format('svg');
+            }
+            
+            h1 {
+                font-family:  ChaletComprimeCologneSeventy;
+                color: #fff;
+                display: inline;
+                font-size: 2.7em;
+                letter-spacing: 0.1em;
+                text-transform: none;
+            }
+            
+            h1.button {
+                text-transform: uppercase !important;
+                letter-spacing: 0.3em;
+                font-size: 2.2em;
+            }
+            
+            p {
+                color: #fff;
+                text-transform: none;
+                letter-spacing: 0.1em;
+            }
+            
+            h2 {
+                color: #fff;
+                font-size: 1.5em;
+                font-weight: 500;
+            }
+
+            container{
+                position: absolute;
+                top: 0;
+                display: block;
+                max-width: 960px;
+                margin: 0 auto;
+                padding: 50px 0 0 50px;
+                height: 100%;
+                min-height: 10em;
+                display: table-cell;
+                vertical-align: middle;
+                z-index: 10;
+            }
+                
             a {
                 color: #fff;
-                background: rgba(255, 255, 255, 0.2);
+                font-weight: 500;
                 text-decoration: none;
-                padding: 15px;
+            }
+            
+            a.button {
+                background: rgba(255, 255, 255, 0.1);
+                border: 1px solid #fff;
+                text-decoration: none;
+                padding: 22px 30px 15px 40px;
                 border-radius: 7px;
-                text-align: center;
+                text-align: center; 
+            }
+            
+            a.button:hover {
+                -moz-box-shadow: 0px 0px 25px rgba(255,255,255,0.5);
+                -webkit-box-shadow: 0px 0px 25px rgba(255,255,255,0.5);
+                box-shadow: 0px 0px 25px rgba(255,255,255,0.5);
+            }
+            
+            .modal {
+                display: none;
+                z-index: 90;
+            }
+            
+            #container2 { 
+                position: absolute; 
+                width: 100%;
+                height: 100%;
+                background: #000;
+                background-image: url(imgs/galaxy.png);
+                z-index: 100;
             }
             
             #splashscreen {
-                position:absolute;
-                top:0;
-                left:0;
-                bottom:0;
-                width:100%;
+                margin: auto;
+                position: relative;
                 color: #fff;
-                background-color:black;
+                text-align: center;
+                height: 200px;
+                width: 600px;
+                 top: 50%;
+                transform: translateY(-50%);
             }
             
             #starName { 
@@ -30,29 +119,53 @@
                 top: 0px; 
                 left: 0px;
 				padding: 5px;
-                background-color: #faffd5;
                 display: none;
+                color: #FFFFEB;
+
+            }
+            
+            #lineName { 
+                position: absolute;
+                top: 0px; 
+                left: 0px;
+				padding: 5px;
+                display: none;
+                color: #FFFFEB;
             }
 
         </style>
 	</head>
     
 	<body>
-<!--
+        
+    <div id="container2">
         <div id="splashscreen">
-       
                 <h1>Zenith</h1>
-                An interactive constellations view
-                <br/><br/><a href="#" class="explore" onclick="moveCam();">Explore</a>
-            
+         <br/><br/>
+            Use your mouse: drag to navigate, scroll to zoom. <br/>
+            Click to find out more.
+                <br/><br/><a href="#" class="explore button" onclick="moveCam();"><h1 class="button">Explore</h1></a>   
         </div>
--->
+    </div>
+        
+        <container>
+           <h1>Zenith</h1><a href="#" class="info">?</a>
+            
+        </container>
+        
+        <a href="#" class="Aries modal">Aries</a>
+        <a href="#" class="Capricorn modal">Capricorn</a>
+        <a href="#" class="Taurus modal">Taurus</a>
+        
         <div id="starName">No star hovered</div>
+        <div id="lineName">No constellation hovered</div>
         
 		<script src="js/three.min.js"></script>
         <script src="js/Detector.js"></script>
         <script src="js/OrbitControls.js"></script>
-        <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script> <!-- neccessary or not to pull in this library? -->
+        <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script> 
+        <script src="js/jquerymodal.js"></script>
+        <script src='js/THREEx.WindowResize.js'></script>
         <script src="js/jquery-csv.min.js"></script>
         <script src="js/tween.min.js"></script>
 		<script>
@@ -61,12 +174,12 @@
             //raycasting
             var projector, raycaster;
             var mouse = new THREE.Vector2(), INTERSECTED, currentIntersected;
-            var sceneLines;
+            var sceneLines, intLines;
             
-            var starData, lineData, stars;
+            var starData, lineData, stars, outerGlow;
             var windowx = window.innerWidth;
             var windowy = window.innerHeight;
-            var positionScale = 0.9;
+            var positionScale = 0.7;
  
             
             $( document ).ready(function() {
@@ -81,11 +194,37 @@
                         init();
                     });
                     
+                    $('.info').paulund_modal_box({
+                        title:'Zenith',
+                        dates: 'by kaye mao',
+                        description:"Use your mouse: drag to navigate, scroll to zoom. <br/>Click to find out more."
+                        ,
+                        width: '800'
+                    });
+                    
+                    $('.Aries').paulund_modal_box({
+                        title:'Aries - The Ram',
+                        dates: 'March 21 - April 19',
+                        description:"In Greek mythology, Aries represents the ram whose fleece was sought by Jason and the Argonauts. When King Athamus of Boetia took a second wife, Ino, she was resentful of his existing children, especially his son, Phrixus, and she wanted him sacrificed. Zeus responded to the pleadings of Phrixus' mother, Nephele, by sending a golden ram to save Phrixus and his sister Helle. Helle did not survive but Phrixus did and sacrificed the ram to Zeus and gave its golden fleece to King Aettes. The fleece was eventually stolen by Jason."
+                    });
+                    
+                    $('.Capricorn').paulund_modal_box({
+                        title:'Capricorn - The Sea Goat',
+                        dates: 'December 22 - January 19',
+                        description:"The Greeks associate the constellation with Pan, the god of nature. Part of Pan’s lore was that he helped Zeus fight the Titans to earn his spot in the heavens. He escaped the monster Typhon by jumping into Nile, but only half of his body was submerged, so he was a fish in the part of his body that remained underwater. Other spins on the tale have the constellation associated with Amalthaea, the mythical goat that acted as a foster mother to Zeus as an infant."
+                    });
+                    
+                    $('.Taurus').paulund_modal_box({
+                        title:'Taurus - The Bull',
+                        dates: 'April 21 - May 21',
+                        description:"When Zeus fell in love with the Phoenician princess Europa, he transformed himself into a white bull with golden horns to whisk her away to Crete. While Taurus is prominent in Greek mythology, he also plays a role in the mythologies of Ancient Babylon and Egypt."
+                    });
+                    
                 });
                                 
              // splashscreen
                 $('.explore').click(function () {
-                    $(this).parent('#splashscreen').fadeOut(500);
+                    $('#container2').fadeOut(500);
                 });       
                     //starData[1][7]
 
@@ -98,7 +237,7 @@
 
                 //we need to see the world
                 camera = new THREE.PerspectiveCamera(50, windowx/windowy, 0.1, 1000);
-                camera.position.set(0,10,100);
+                camera.position.set(100,0,0);
 
                 //we need to update the display
                 renderer = new THREE.WebGLRenderer();
@@ -108,20 +247,55 @@
                 
                 //let there be light
                 
-                         var light	= new THREE.AmbientLight( 0x888888 );
-	scene.add( light );
+                var light	= new THREE.AmbientLight( 0x888888 );
+	           scene.add( light );
                 
                 var light = new THREE.SpotLight( 0xCCCCCC, 1, 0, Math.PI, 1);
                 light.position.set(20,50,50);
                 scene.add(light);
                 
                 // earth woo
-                geometry = new THREE.SphereGeometry(1, 30, 30);
-                material = new THREE.MeshLambertMaterial( {color:0x0000ff});
+                geometry = new THREE.SphereGeometry(0.5, 32, 32);
+                material  = new THREE.MeshPhongMaterial();
                 var earth = new THREE.Mesh(geometry, material);  
                 earth.scale.set(0.5,0.5,0.5);
                 earth.position.set(0, 0, 0);
+                
+                 material.map    = THREE.ImageUtils.loadTexture('imgs/earthmap.jpg'); // map color texture to sphere
+                
+                //map bump
+                material.bumpMap    = THREE.ImageUtils.loadTexture('imgs/earthbump1k.jpg'); 
+                material.bumpScale = 0.08;
+                
+                //specular light, only shiny things are water
+                material.specularMap    = THREE.ImageUtils.loadTexture('imgs/earthspec1k.jpg');
+                material.specular  = new THREE.Color('grey');
+                
                 scene.add(earth);
+                                
+                var geometry   = new THREE.SphereGeometry(0.51, 32, 32);
+                var material  = new THREE.MeshPhongMaterial({
+                   // map     : new THREE.Texture(canvasCloud), //load texture from?
+                  map     : THREE.ImageUtils.loadTexture('imgs/earthcloudmap.png'),
+                  side        : THREE.DoubleSide,
+                  opacity     : 0.8,
+                  transparent : true,
+                  depthWrite  : false,
+                });
+                var cloudMesh = new THREE.Mesh(geometry, material);
+                earth.add(cloudMesh);
+                
+                
+                //galaxy
+                var geometry  = new THREE.SphereGeometry(500, 32, 32);
+                var material  = new THREE.MeshBasicMaterial();
+                var galaxy = new THREE.Mesh(geometry, material);
+                
+                material.map   = THREE.ImageUtils.loadTexture('imgs/galaxy.png');
+                material.side  = THREE.BackSide; //inside of sphere
+                // create the mesh based on geometry and material
+                var mesh  = new THREE.Mesh(geometry, material);
+                scene.add(galaxy);
                 
                 
                 // map negative absolute magnitude ranges
@@ -134,38 +308,52 @@
                
                 stars = new THREE.Object3D();
                 scene.add( stars );
+                
+                outerGlow = new THREE.Object3D();
+                scene.add( outerGlow );
+                
+                var spriteMaterial = new THREE.SpriteMaterial( 
+                { 
+                    map: new THREE.ImageUtils.loadTexture( 'imgs/glow.png' ), 
+                    color: 0xCCFFFF, transparent: false, blending: THREE.AdditiveBlending
+                });
                         
                 for (var i = 1; i < starData.length; i++) {
-                    star = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({color:0x00ffff})); 
+                    var sprite = new THREE.Sprite( spriteMaterial );
+                    
+                    star = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({color:0x99FFCC, transparent: true, opacity : 0.5})); 
                     // map magnitude for brightness, parseFloat(starData[i][2])
                     
                     star.position.x = parseFloat(starData[i][4] *positionScale); 
                     star.position.y = parseFloat(starData[i][5] *positionScale);
                     star.position.z = parseFloat(starData[i][6] *positionScale);
                     
+                    sprite.position.set(star.position.x, star.position.y, star.position.z);
+//                    star.name=starData[i][7] + " " + starData[i][8];
                     
-                    star.name=starData[i][7] + " " + starData[i][8];
+                    sprite.name = starData[i][8];
+                    star.name=starData[i][7];
 
-                    
-                    // for magnitude, the more negative a number, the brighter MAKE NEGATIVE Inverse problem
-                    
-                    // from asbolute magnitude, don't forget to change range values. NEED INVERT MATRIX
-                    var absoMag = map_range(parseFloat(starData[i][3]), -3.297647909, 2.304163211 , 0, 1.5) * 0.5;
-                    
+                    // for magnitude, the more negative a number, the brighter 
+                    var absoMag = map_range(parseFloat(starData[i][3]), 3.959472819, -3.297647909 , 0, 0.8);
+                    var glowMag = absoMag*4;
+
                     star.scale.set(absoMag,absoMag,absoMag);
-                    
-//                    scene.add( star ); 
- 
+                    sprite.scale.set(glowMag, glowMag, glowMag);
+
                     stars.add(star);
+                    outerGlow.add(sprite);
                 }
                 
                 // draw lines for constellations
                 sceneLines = new THREE.Object3D();
                 scene.add(sceneLines);
                 
-                function drawLines(constellation) {                   
+                intLines = new THREE.Object3D();
+                
+                function drawLines(constellation, constName) {                   
                     var linegeometry = new THREE.Geometry();
-                    material = new THREE.LineBasicMaterial({color: 0x00ffff});
+                    material = new THREE.LineBasicMaterial({color: 0xffffff, transparent: true, opacity : 0.2});
 
                     for (var h = 1; h < lineData[constellation].length; h++) {
                         linegeometry.hip = lineData[constellation][h];
@@ -184,14 +372,17 @@
                 }
 
                 var lines = new THREE.Line( linegeometry, material );
-                 sceneLines.add( lines );
+                var lines2 = new THREE.Line( linegeometry, material );
+                lines.name = constName;
+                lines2.name = constName;
+                sceneLines.add( lines );
+                intLines.add( lines2 );
 
                 }
                 
-                
-                
-                drawLines(0); // aries
-                drawLines(1); //capricorn
+                drawLines(0, "Aries"); // aries
+                drawLines(1, "Capricorn"); //capricorn
+                drawLines(2, "Taurus"); //Taurus
 
         
                 // raycasting
@@ -209,58 +400,61 @@
                     mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
 		
                     // label
-                    var label = document.getElementById("starName");
+                    var starlabel = document.getElementById("starName");
 
                     var vector = new THREE.Vector3( mouse.x, mouse.y, 1 ).unproject( camera );
-//                    projector.unproject( vector, camera );
 
                     raycaster.set( camera.position, vector.sub( camera.position ).normalize() );
                     var intersects = raycaster.intersectObjects( stars.children );
-                    var lineintersects = raycaster.intersectObjects( sceneLines.children, true);
+                
+                     // mouse position for label
+                    var x = event.clientX;  
+                    var y = event.clientY; 
                     
                     // check if intersecting with star
                     if ( intersects.length > 0 ) {
                         if ( INTERSECTED != intersects[ 0 ].object ) {
-                            if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
 
                             INTERSECTED = intersects[ 0 ].object;
                             INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
                             // yes intersecting do this
-                            INTERSECTED.material.emissive.setHex( 0xff0000 );
+                            INTERSECTED.material.opacity= 0.9;
 
-                             // mouse position for label
-                            var x = event.clientX;  
-                            var y = event.clientY; 
-
-                            label.innerHTML = INTERSECTED.name;
-                            label.style.top = y+20 + 'px';
-                            label.style.left = x+20 + 'px';
-                            label.style.display = "initial";
+                            starlabel.innerHTML = INTERSECTED.name;
+                            starlabel.style.top = y+15 + 'px';
+                            starlabel.style.left = x+15 + 'px';
+                            starlabel.style.display = "initial";
                         }
 
                     } else {
-                        if ( INTERSECTED ) {INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
-                                           label.style.display = "none";}
+                        if ( INTERSECTED ) {INTERSECTED.material.opacity= 0.5;
+                                           starlabel.style.display = "none";}
                         INTERSECTED = null;
                     }       
+                    
+                    //line variables
+                    var linelabel = document.getElementById("lineName");
+                    var lineintersects = raycaster.intersectObjects( sceneLines.children, true);
                     
                     //check if intersecting with line
                     if ( lineintersects.length > 0 ) {
 
                         if ( lineintersects[ 0 ].object != currentIntersected ) {
 
-                            if ( currentIntersected ) currentIntersected.material.color.setHex( currentIntersected.currentHex );
                             currentIntersected = lineintersects[ 0 ].object;
-                            currentIntersected.currentHex = currentIntersected.material.color.getHex();
-
-                             currentIntersected.material.color.setHex( 0xff0000 );
-
+                            currentIntersected.material.opacity= 0.6;
+                            
+                            linelabel.innerHTML = currentIntersected.name;
+                            linelabel.style.top = y-50 + 'px';
+                            linelabel.style.left = x-50 + 'px';
+                            linelabel.style.display = "initial";
+                            
                         }
 
                     } else {
 
-                        if ( currentIntersected ) currentIntersected.material.color.setHex( currentIntersected.currentHex );
-
+                        if ( currentIntersected ) {currentIntersected.material.opacity= 0.2;
+                                                   linelabel.style.display = "none";}
                        currentIntersected = null;
 
                     } 
@@ -269,20 +463,48 @@
                             
                 // camera controls
                 controls = new THREE.OrbitControls(camera);
+                controls.zoomSpeed = 0.1;
                 render();
+        
+            }
+            
+            // modal
+            document.onmousedown = function(e) {
                 
-                 // Axes
-                axes = buildAxes();
-                scene.add( axes );
+                mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+                mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+                
+                var vector = new THREE.Vector3( mouse.x, mouse.y, 1 ).unproject( camera );
+                raycaster.set( camera.position, vector.sub( camera.position ).normalize() );
+                var intersects = raycaster.intersectObjects( outerGlow.children );
+                
+                // check if intersecting with lines
+                var lineintersects = raycaster.intersectObjects( intLines.children, true);
+                    
+                    //check if intersecting with line
+                    if ( lineintersects.length > 0 ) {
+
+                        if ( lineintersects[ 0 ].object != currentIntersected ) {
+
+                            currentIntersected = lineintersects[ 0 ].object;
+
+                            // trigger modal
+                            $('.'+currentIntersected.name).click();
+                        }
+
+                    } else {
+                       currentIntersected = null;
+
+                    } 
             }
             
             // animations
             function moveCam(){
 
-                    var pos1 = new TWEEN.Tween(camera.position).to({z:-200, x: 200}, 8000).easing(TWEEN.Easing.Quadratic.InOut);
-                    var rot1 = new TWEEN.Tween(camera.rotation).to({y:-3}, 8000).easing(TWEEN.Easing.Quadratic.InOut); //rotation in radians, 3.14 = full 180
-                    
-                pos1.chain(rot1); //connect 
+                var pos1 = new TWEEN.Tween(camera.position).to({z:0.5, y:0.5, x: 0.5}, 8000).easing(TWEEN.Easing.Quadratic.InOut);
+                var pos2 = new TWEEN.Tween(camera.position).to({z:100, y:10, x: 10}, 8000).easing(TWEEN.Easing.Quadratic.InOut);
+                
+                pos1.chain(pos2);
                 pos1.start();
             }
 
@@ -295,6 +517,7 @@
                 //for labels
                 camera.updateMatrixWorld();
                 
+                THREEx.WindowResize(renderer, camera);
 				renderer.render(scene, camera);
                 controls.update();
                 
@@ -302,39 +525,6 @@
                 
 			}
             
-            // http://soledadpenades.com/articles/three-js-tutorials/drawing-the-coordinate-axes/
-                function buildAxes() {
-                    var axes = new THREE.Object3D();
-
-                    axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 100, 0, 0 ), 0xFF0000, false ) ); // +X
-                    axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( -100, 0, 0 ), 0x800000, true) ); // -X
-                    axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 100, 0 ), 0x00FF00, false ) ); // +Y
-                    axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, -100, 0 ), 0x008000, true ) ); // -Y
-                    axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, 100 ), 0x0000FF, false ) ); // +Z
-                    axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, -100 ), 0x000080, true ) ); // -Z
-
-                    return axes;
-
-                }
-
-                function buildAxis( src, dst, colorHex, dashed ) {
-                    var geom = new THREE.Geometry(),
-                        mat; 
-
-                    if(dashed) {
-                        mat = new THREE.LineDashedMaterial({ linewidth: 1, color: colorHex, dashSize: 5, gapSize: 5 });
-                    } else {
-                        mat = new THREE.LineBasicMaterial({ linewidth: 1, color: colorHex });
-                    }
-
-                    geom.vertices.push( src.clone() );
-                    geom.vertices.push( dst.clone() );
-
-                    var axis = new THREE.Line( geom, mat );
-
-                    return axis;
-
-                }
 
 		</script>
 	</body>
