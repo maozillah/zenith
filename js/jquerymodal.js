@@ -20,6 +20,7 @@
 			height : "250",
 			width : "500",
 			title:"JQuery Modal Box Demo",
+            dates: "jan-dec",
 			description: "Example of how to create a modal box.",
 			top: "20%",
 			left: "30%",
@@ -44,15 +45,8 @@
 				'top':options.top,
 				'display':'none',
 				'height': options.height + 'px',
-				'width': options.width + 'px',
-				'border':'1px solid #fff',
-				'box-shadow': '0px 2px 7px #292929',
-				'-moz-box-shadow': '0px 2px 7px #292929',
-				'-webkit-box-shadow': '0px 2px 7px #292929',
-				'border-radius':'10px',
-				'-moz-border-radius':'10px',
-				'-webkit-border-radius':'10px',
-				'background': '#f2f2f2', 
+				'width': options.width + 'px',				
+				'background': '#000000', 
 				'z-index':'50',
 			});
 			$('.paulund_modal_close').css({
@@ -74,16 +68,16 @@
 				'width':'100%',
 				'z-index':'10'
 			});
-			$('.paulund_inner_modal_box').css({
-				'background-color':'#fff',
-				'height':(options.height - 50) + 'px',
-				'width':(options.width - 50) + 'px',
-				'padding':'10px',
-				'margin':'15px',
-				'border-radius':'10px',
-				'-moz-border-radius':'10px',
-				'-webkit-border-radius':'10px'
-			});
+//			$('.paulund_inner_modal_box').css({
+//				'background-color':'#000000',
+//				'height':(options.height - 50) + 'px',
+//				'width':(options.width - 50) + 'px',
+//				'padding':'10px',
+//				'margin':'15px',
+//				'border-radius':'10px',
+//				'-moz-border-radius':'10px',
+//				'-webkit-border-radius':'10px'
+//			});
 		}
 		
 		 /**
@@ -99,7 +93,7 @@
 		  * Creates the modal box
 		  */
 		 function add_popup_box(){
-			 var pop_up = $('<div class="paulund_modal_box"><a href="#" class="paulund_modal_close"></a><div class="paulund_inner_modal_box"><h2>' + options.title + '</h2><p>' + options.description + '</p></div></div>');
+			 var pop_up = $('<div class="paulund_modal_box"><a href="#" class="paulund_modal_close"></a><h1>' + options.title + '</h1><h2>' + options.dates +'</h2><p>' + options.description + '</p></div>');
 			 $(pop_up).appendTo('.paulund_block_page');
 			 			 
 			 $('.paulund_modal_close').click(function(){

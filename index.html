@@ -1,14 +1,20 @@
 <html>
 	<head>
 		<title>zenith</title>
+        <link href='http://fonts.googleapis.com/css?family=Roboto:500,300' rel='stylesheet' type='text/css'>
 		<style>
             
             html * {
-                font-size: 14pt;
+                font-size: 12pt;
             }
             body { width: 100%; height: 100%; margin: 0; padding: 0; height: 100%;
 				overflow:hidden;
                 font-size:1em;
+               font-family: 'Roboto', sans-serif;
+                font-weight: 300;
+                text-transform: uppercase;
+                letter-spacing: 0.054em;
+                line-height: 1.8em;
             }
             
             @font-face {
@@ -25,8 +31,19 @@
                 font-family:  ChaletComprimeCologneSeventy;
                 color: #fff;
                 display: inline;
-                font-size: 2.4em;
+                font-size: 2.7em;
                 letter-spacing: 0.1em;
+                text-transform: none;
+            }
+            
+            p {
+                color: #fff;
+            }
+            
+            h2 {
+                color: #fff;
+                font-size: 1.5em;
+                font-weight: 500;
             }
 
             container{
@@ -71,7 +88,7 @@
                 color: #fff;
                 text-align: center;
                 height: 200px;
-                width: 400px;
+                width: 600px;
                  top: 50%;
                 transform: translateY(-50%);
             }
@@ -81,8 +98,9 @@
                 top: 0px; 
                 left: 0px;
 				padding: 5px;
-                background-color: #faffd5;
                 display: none;
+                color: #FFFFEB;
+
             }
             
             #lineName { 
@@ -90,8 +108,8 @@
                 top: 0px; 
                 left: 0px;
 				padding: 5px;
-                background-color: #faffd5;
                 display: none;
+                color: #FFFFEB;
             }
 
         </style>
@@ -104,7 +122,7 @@
                 <h1>Zenith</h1>
          <br/><br/>
             Using your mouse: drag to navigate, scroll to zoom. <br/>
-            Click on to find out more.
+            Click to find out more.
                 <br/><br/><a href="#" class="explore" onclick="moveCam();"><h1>Explore</h1></a>   
         </div>
     </div>
@@ -154,16 +172,17 @@
                         init();
                     });
                     
-                    $('.info').paulund_modal_box({
-                        title:'Zenith',
-                        description:"blahblahcredits"
-                        ,
-                        height: '500',
-                        width: '800'
-                    });
+//                    $('.info').paulund_modal_box({
+//                        title:'Zenith',
+//                        description:"blahblahcredits"
+//                        ,
+//                        height: '500',
+//                        width: '800'
+//                    });
                     
                     $('.Aries').paulund_modal_box({
-                        title:'Aries - The Ram <br/> March 21 - April 19',
+                        title:'Aries - The Ram',
+                        dates: 'March 21 - April 19',
                         description:"In Greek mythology, Aries represents the ram whose fleece was sought by Jason and the Argonauts. When King Athamus of Boetia took a second wife, Ino, she was resentful of his existing children, especially his son, Phrixus, and she wanted him sacrificed. Zeus responded to the pleadings of Phrixus' mother, Nephele, by sending a golden ram to save Phrixus and his sister Helle. Helle did not survive but Phrixus did and sacrificed the ram to Zeus and gave its golden fleece to King Aettes. The fleece was eventually stolen by Jason."
                         ,
                         height: '500',
@@ -171,7 +190,8 @@
                     });
                     
                     $('.Capricorn').paulund_modal_box({
-                        title:'Capricorn - The Sea Goat <br/> December 22 - January 19',
+                        title:'Capricorn - The Sea Goat',
+                        dates: 'December 22 - January 19',
                         description:"The constellation has its roots in the cultures of Sumeria — which identified it with a mythical figure that was half goat and half fish — and Babylonia, which portrayed it as a goat-human hybrid. <br/>The Greeks associate the constellation with Pan, the god of nature. Part of Pan’s lore was that he helped Zeus fight the Titans to earn his spot in the heavens. He escaped the monster Typhon by jumping into Nile, but only half of his body was submerged, so he was a fish in the part of his body that remained underwater. Other spins on the tale have the constellation associated with Amalthaea, the mythical goat that acted as a foster mother to Zeus as an infant."
                         ,
                         height: '500',
@@ -380,8 +400,8 @@
                             INTERSECTED.material.opacity= 0.9;
 
                             starlabel.innerHTML = INTERSECTED.name;
-                            starlabel.style.top = y+20 + 'px';
-                            starlabel.style.left = x+20 + 'px';
+                            starlabel.style.top = y+15 + 'px';
+                            starlabel.style.left = x+15 + 'px';
                             starlabel.style.display = "initial";
                         }
 
