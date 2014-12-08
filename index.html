@@ -31,6 +31,7 @@
             
             .modal {
                 display: none;
+                z-index: 90;
             }
             
             #container2 { 
@@ -47,8 +48,25 @@
                 color: #fff;
                 text-align: center;
                 height: 200px;
-                width: 200px;
+                width: 350px;
                  top: 50%;
+                transform: translateY(-50%);
+            }
+            
+            container3 { 
+                position: absolute; 
+                width: 100%;
+                height: 100%;
+                background: #000;
+            }
+            #loading{
+                text-align: center;
+                height: 200px;
+                width: 200px;
+                color: #fff;
+                margin: auto;
+                position: relative;
+                top: 50%;
                 transform: translateY(-50%);
             }
             
@@ -78,9 +96,19 @@
     <div id="container2">
         <div id="splashscreen">
                 <h1>Zenith</h1>
-                An interactive constellations view
+                <h2>An interactive constellations view.</h2> 
+            Drag and scroll with your mouse to navigate. <br/>
+            Click on a constellation to find out more.
                 <br/><br/><a href="#" class="explore" onclick="moveCam();">Explore</a>   
         </div>
+    </div>
+        
+<!--
+        <div id="container3">
+        <div id="loading">
+              
+        </div>
+-->
     </div>
         
         <container>
@@ -169,7 +197,7 @@
 
                 //we need to see the world
                 camera = new THREE.PerspectiveCamera(50, windowx/windowy, 0.1, 1000);
-                camera.position.set(0,10,100);
+                camera.position.set(100,0,0);
 
                 //we need to update the display
                 renderer = new THREE.WebGLRenderer();
@@ -435,7 +463,9 @@
             function moveCam(){
 
                 var pos1 = new TWEEN.Tween(camera.position).to({z:0.5, y:0.5, x: 0.5}, 8000).easing(TWEEN.Easing.Quadratic.InOut);
-
+                var pos2 = new TWEEN.Tween(camera.position).to({z:100, y:10, x: 10}, 8000).easing(TWEEN.Easing.Quadratic.InOut);
+                
+                pos1.chain(pos2);
                 pos1.start();
             }
 
