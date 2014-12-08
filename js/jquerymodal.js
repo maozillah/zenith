@@ -17,12 +17,12 @@
 		// Default parameters
 
 		var options = $.extend({
-			height : "250",
+//			height : "250",
 			width : "700",
 			title:"JQuery Modal Box Demo",
             dates: "jan-dec",
 			description: "Example of how to create a modal box.",
-			top: "20%",
+			top: "30%",
 			left: "30%",
 		},prop);
 				
@@ -48,9 +48,9 @@
 				'width': options.width + 'px',				
 				'background': '#000000', 
 				'z-index':'50',
-                '-moz-box-shadow':'0px 0px 50px rgba(255,255,255,0.6)',
-                '-webkit-box-shadow':'0px 0px 50px rgba(255,255,255,0.6)',
-                'box-shadow':'0px 0px 50px rgba(255,255,255,0.6)',
+                '-moz-box-shadow':'0px 0px 50px rgba(255,255,255,0.4)',
+                '-webkit-box-shadow':'0px 0px 50px rgba(255,255,255,0.4)',
+                'box-shadow':'0px 0px 50px rgba(255,255,255,0.4)',
                 'border-radius':'10px',
 				'-moz-border-radius':'10px',
 				'-webkit-border-radius':'10px',
@@ -59,8 +59,8 @@
 			});
 			$('.paulund_modal_close').css({
 				'position':'relative',
-				'top':'-25px',
-				'left':'20px',
+				'top':'-30px',
+				'left':'40px',
 				'float':'right',
 				'display':'block',
 				'height':'50px',

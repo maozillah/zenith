@@ -61,9 +61,14 @@
                 vertical-align: middle;
                 z-index: 10;
             }
-            
+                
             a {
                 color: #fff;
+                font-weight: 500;
+                text-decoration: none;
+            }
+            
+            a.button {
                 background: rgba(255, 255, 255, 0.2);
                 text-decoration: none;
                 padding: 15px;
@@ -125,7 +130,7 @@
          <br/><br/>
             Using your mouse: drag to navigate, scroll to zoom. <br/>
             Click to find out more.
-                <br/><br/><a href="#" class="explore" onclick="moveCam();"><h1>Explore</h1></a>   
+                <br/><br/><a href="#" class="explore button" onclick="moveCam();"><h1>Explore</h1></a>   
         </div>
     </div>
         
@@ -174,21 +179,20 @@
                         init();
                     });
                     
-//                    $('.info').paulund_modal_box({
-//                        title:'Zenith',
-//                        description:"blahblahcredits"
-//                        ,
-//                        height: '500',
-//                        width: '800'
-//                    });
+                    $('.info').paulund_modal_box({
+                        title:'Zenith',
+                        dates: 'a project by kaye mao',
+                        description:"blahblahcredits"
+                        ,
+                        width: '800'
+                    });
                     
                     $('.Aries').paulund_modal_box({
                         title:'Aries - The Ram',
                         dates: 'March 21 - April 19',
                         description:"In Greek mythology, Aries represents the ram whose fleece was sought by Jason and the Argonauts. When King Athamus of Boetia took a second wife, Ino, she was resentful of his existing children, especially his son, Phrixus, and she wanted him sacrificed. Zeus responded to the pleadings of Phrixus' mother, Nephele, by sending a golden ram to save Phrixus and his sister Helle. Helle did not survive but Phrixus did and sacrificed the ram to Zeus and gave its golden fleece to King Aettes. The fleece was eventually stolen by Jason."
                         ,
-                        height: '500'
-//                        ,
+
 //                        width: '800'
                     });
                     
@@ -197,8 +201,7 @@
                         dates: 'December 22 - January 19',
                         description:"The Greeks associate the constellation with Pan, the god of nature. Part of Pan’s lore was that he helped Zeus fight the Titans to earn his spot in the heavens. He escaped the monster Typhon by jumping into Nile, but only half of his body was submerged, so he was a fish in the part of his body that remained underwater. Other spins on the tale have the constellation associated with Amalthaea, the mythical goat that acted as a foster mother to Zeus as an infant."
                         ,
-                        height: '500'
-//                        ,
+
 //                        width: '800'
                     });
                     
