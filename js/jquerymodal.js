@@ -6,6 +6,8 @@
  * URL: http://www.paulund.co.uk
  * 
  * Available for free download from http://www.paulund.co.uk
+ 
+ modified dec 8, 2014 by Kaye Mao
  */
 
 (function($){

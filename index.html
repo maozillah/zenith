@@ -180,6 +180,7 @@
             var windowx = window.innerWidth;
             var windowy = window.innerHeight;
             
+            // prevent clicking when modals are up
             var clickable = false;
             
             // how far away stars are to earth
@@ -198,6 +199,7 @@
                         init();
                     });
                     
+                    // modals pulling the template from js/jquerymodal.js
                     $('.info').paulund_modal_box({
                         title:'Zenith',
                         dates: 'by kaye mao',
@@ -230,7 +232,6 @@
                 $('.explore').click(function () {
                     $('#container2').fadeOut(500);
                 });       
-                    //starData[1][7]
 
             });
 
@@ -238,7 +239,6 @@
                 if ( !Detector.webgl ) Detector.addGetWebGLMessage();
                 scene = new THREE.Scene();
                 
-
                 //we need to see the world
                 camera = new THREE.PerspectiveCamera(50, windowx/windowy, 0.1, 1000);
                 camera.position.set(100,0,0);
@@ -250,7 +250,6 @@
                 document.body.appendChild(renderer.domElement);
                 
                 //let there be light
-                
                 var light	= new THREE.AmbientLight( 0x888888 );
 	           scene.add( light );
                 
@@ -265,9 +264,10 @@
                 earth.scale.set(0.5,0.5,0.5);
                 earth.position.set(0, 0, 0);
                 
-                 material.map    = THREE.ImageUtils.loadTexture('imgs/earthmap.jpg'); // map color texture to sphere
+                // add textures to earth
                 
-                //map bump
+                material.map    = THREE.ImageUtils.loadTexture('imgs/earthmap.jpg');   
+                // elevations from earth
                 material.bumpMap    = THREE.ImageUtils.loadTexture('imgs/earthbump1k.jpg'); 
                 material.bumpScale = 0.08;
                 
@@ -276,10 +276,10 @@
                 material.specular  = new THREE.Color('grey');
                 
                 scene.add(earth);
-                                
+                
+                // clouds
                 var geometry   = new THREE.SphereGeometry(0.51, 32, 32);
                 var material  = new THREE.MeshPhongMaterial({
-                   // map     : new THREE.Texture(canvasCloud), //load texture from?
                   map     : THREE.ImageUtils.loadTexture('imgs/earthcloudmap.png'),
                   side        : THREE.DoubleSide,
                   opacity     : 0.8,
@@ -289,20 +289,17 @@
                 var cloudMesh = new THREE.Mesh(geometry, material);
                 earth.add(cloudMesh);
                 
-                
-                //galaxy
+                //galaxy sphere with stars
                 var geometry  = new THREE.SphereGeometry(500, 32, 32);
                 var material  = new THREE.MeshBasicMaterial();
                 var galaxy = new THREE.Mesh(geometry, material);
                 
                 material.map   = THREE.ImageUtils.loadTexture('imgs/galaxy.png');
-                material.side  = THREE.BackSide; //inside of sphere
-                // create the mesh based on geometry and material
+                material.side  = THREE.BackSide; //map image to inside of sphere
                 var mesh  = new THREE.Mesh(geometry, material);
                 scene.add(galaxy);
                 
-                
-                // map negative absolute magnitude ranges
+                // use to map magnitudes to sphere sizes
                 function map_range(value, low1, high1, low2, high2) {
                     return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
                 }
@@ -313,32 +310,36 @@
                 stars = new THREE.Object3D();
                 scene.add( stars );
                 
+                // create another 3D object for sprites to attach to 
                 outerGlow = new THREE.Object3D();
                 scene.add( outerGlow );
                 
+                // create outerglow using sprites
                 var spriteMaterial = new THREE.SpriteMaterial( 
                 { 
                     map: new THREE.ImageUtils.loadTexture( 'imgs/glow.png' ), 
                     color: 0xCCFFFF, transparent: false, blending: THREE.AdditiveBlending
                 });
-                        
+                
+                // parse through starData
                 for (var i = 1; i < starData.length; i++) {
                     var sprite = new THREE.Sprite( spriteMaterial );
                     
                     star = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({color:0x99FFCC, transparent: true, opacity : 0.5})); 
-                    // map magnitude for brightness, parseFloat(starData[i][2])
                     
                     star.position.x = parseFloat(starData[i][4] *positionScale); 
                     star.position.y = parseFloat(starData[i][5] *positionScale);
                     star.position.z = parseFloat(starData[i][6] *positionScale);
                     
+                    // give outer glow same positions as stars
                     sprite.position.set(star.position.x, star.position.y, star.position.z);
-//                    star.name=starData[i][7] + " " + starData[i][8];
                     
+                    // set it equal to constellation name
                     sprite.name = starData[i][8];
+                    // set it equal to star name
                     star.name=starData[i][7];
 
-                    // for magnitude, the more negative a number, the brighter 
+                    // for magnitude, the more negative a number, the brighter the star = bigger it should be 
                     var absoMag = map_range(parseFloat(starData[i][3]), 3.959472819, -3.297647909 , 0, 0.8);
                     var glowMag = absoMag*4;
 
@@ -346,6 +347,8 @@
                     sprite.scale.set(glowMag, glowMag, glowMag);
 
                     stars.add(star);
+                    
+                    // attach sprite to positional data so not to break raycaster
                     outerGlow.add(sprite);
                 }
                 
@@ -369,12 +372,14 @@
                                 star.position.x = parseFloat(starData[i][4] *positionScale); 
                                 star.position.y = parseFloat(starData[i][5] *positionScale);
                                 star.position.z = parseFloat(starData[i][6] *positionScale);
-
+                                
+                                // set position of stars as the vertices of constellation
                                 linegeometry.vertices.push( star.position.clone() );
                             }
                         }  		
                 }
 
+                // draw another set of lines for onclick function raycasting
                 var lines = new THREE.Line( linegeometry, material );
                 var lines2 = new THREE.Line( linegeometry, material );
                 lines.name = constName;
@@ -394,12 +399,11 @@
                 projector = new THREE.Projector();
 				raycaster = new THREE.Raycaster();
                 
-                // User interaction
                 document.addEventListener( 'mousemove', onDocumentMouseMove, false );
                 
                 function onDocumentMouseMove( event ) {
                     
-                     if(clickable) {
+                    if(clickable) {
                          
                     event.preventDefault();
                     mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
@@ -425,7 +429,8 @@
                             INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
                             // yes intersecting do this
                             INTERSECTED.material.opacity= 0.9;
-
+                            
+                            // star label css 
                             starlabel.innerHTML = INTERSECTED.name;
                             starlabel.style.top = y+15 + 'px';
                             starlabel.style.left = x+15 + 'px';
@@ -434,11 +439,9 @@
 
                     } else {
                         if ( INTERSECTED ) {INTERSECTED.material.opacity= 0.5;
-                                           starlabel.style.display = "none";}
+                                           starlabel.style.display = "none";} // hide label when not hovering
                         INTERSECTED = null;
                     }   
-                    
-                    
                     
                     //line variables
                     var linelabel = document.getElementById("lineName");
@@ -452,29 +455,26 @@
                             currentIntersected = lineintersects[ 0 ].object;
                             currentIntersected.material.opacity= 0.6;
                             
+                            // display name of constellation if hovering over line
                             linelabel.innerHTML = currentIntersected.name;
                             linelabel.style.top = y-50 + 'px';
                             linelabel.style.left = x-50 + 'px';
                             linelabel.style.display = "initial";
-                            
                         }
 
                     } else {
-
                         if ( currentIntersected ) {currentIntersected.material.opacity= 0.2;
                                                    linelabel.style.display = "none";}
                        currentIntersected = null;
 
                     } 
-
-                }
-                    
+                }   
                 }
                             
                 // camera controls
                 controls = new THREE.OrbitControls(camera);
                 controls.zoomSpeed = 0.1;
-                controls.enabled = false;
+                controls.enabled = false; // initially turned off because of splashpage
                 
                 render();
         
@@ -501,15 +501,13 @@
 
                             currentIntersected = lineintersects[ 0 ].object;
 
-                            // trigger modal
+                            // trigger modal corresponding with constellation
                             $('.'+currentIntersected.name).click();
                         }
 
                     } else {
                        currentIntersected = null;
-
-                    } 
-                    
+                    }   
                 }
             }
             
@@ -522,6 +520,7 @@
                 pos1.chain(pos2);
                 pos1.start();
                 
+                // allow clicking only after tweening finishes
                 setTimeout('clickable=true', 15500);
             }
 
@@ -531,22 +530,21 @@
 
                 camera.lookAt (scene.position);
                 
-                //for labels
                 camera.updateMatrixWorld();
                 
+                // threex plugin for dynamic resizing of window
                 THREEx.WindowResize(renderer, camera);
 				renderer.render(scene, camera);
                 
-                controls.update(); 
+                controls.update();
+                // constantly check variable to toggle orbit controls on/off depending if modal is there
                 if (clickable) {controls.enabled = true; } else {
                     controls.enabled = false;
                 }
                 
                 TWEEN.update();
-                
 			}
-            
-
+        
 		</script>
 	</body>
 </html>
