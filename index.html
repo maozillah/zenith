@@ -73,7 +73,7 @@
             var mouse = new THREE.Vector2(), INTERSECTED, currentIntersected;
             var sceneLines;
             
-            var starData, lineData, stars;
+            var starData, lineData, stars, outerGlow;
             var windowx = window.innerWidth;
             var windowy = window.innerHeight;
             var positionScale = 0.9;
@@ -179,8 +179,19 @@
                
                 stars = new THREE.Object3D();
                 scene.add( stars );
+                
+                outerGlow = new THREE.Object3D();
+                scene.add( outerGlow );
+                
+                var spriteMaterial = new THREE.SpriteMaterial( 
+                { 
+                    map: new THREE.ImageUtils.loadTexture( 'imgs/glow.png' ), 
+                    color: 0xffffff, transparent: false, blending: THREE.AdditiveBlending
+                });
                         
                 for (var i = 1; i < starData.length; i++) {
+                    var sprite = new THREE.Sprite( spriteMaterial );
+                    
                     star = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({color:0x00ffff})); 
                     // map magnitude for brightness, parseFloat(starData[i][2])
                     
@@ -188,20 +199,23 @@
                     star.position.y = parseFloat(starData[i][5] *positionScale);
                     star.position.z = parseFloat(starData[i][6] *positionScale);
                     
-                    star.name=starData[i][7];
+                    sprite.position.set(star.position.x, star.position.y, star.position.z);
 //                    star.name=starData[i][7] + " " + starData[i][8];
-
                     
+                    
+                    star.name=starData[i][7];
+
                     // for magnitude, the more negative a number, the brighter MAKE NEGATIVE Inverse problem
                     
                     // from asbolute magnitude, don't forget to change range values. NEED INVERT MATRIX
                     var absoMag = map_range(parseFloat(starData[i][3]), -3.297647909, 2.304163211 , 0, 1.5) * 0.5;
-                    
+                    var glowMag = absoMag*4;
+
                     star.scale.set(absoMag,absoMag,absoMag);
-                    
-//                    scene.add( star ); 
- 
+                     sprite.scale.set(glowMag, glowMag, glowMag);
+
                     stars.add(star);
+                    outerGlow.add(sprite);
                 }
                 
                 // draw lines for constellations
