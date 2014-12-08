@@ -65,7 +65,7 @@
 				'display':'block',
 				'height':'50px',
 				'width':'50px',
-				'background': 'url(../imgs/close.png) no-repeat',
+				'background': 'url(http://maozillah.github.io/zenith/imgs/close.png) no-repeat',
 			});
 			$('.paulund_block_page').css({
 				'position':'absolute',
