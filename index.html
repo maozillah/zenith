@@ -258,7 +258,7 @@
 				raycaster = new THREE.Raycaster();
                 
                 // User interaction
-                document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+//                document.addEventListener( 'mousemove', onDocumentMouseMove, false );
                 
                 function onDocumentMouseMove( event ) {
                     
@@ -270,7 +270,6 @@
                     var starlabel = document.getElementById("starName");
 
                     var vector = new THREE.Vector3( mouse.x, mouse.y, 1 ).unproject( camera );
-//                    projector.unproject( vector, camera );
 
                     raycaster.set( camera.position, vector.sub( camera.position ).normalize() );
                     var intersects = raycaster.intersectObjects( stars.children );
@@ -338,6 +337,39 @@
                  // Axes
                 axes = buildAxes();
                 scene.add( axes );
+            }
+            
+            // modal
+            document.onmousedown = function(e) {
+                
+                mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+                mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+                
+                var vector = new THREE.Vector3( mouse.x, mouse.y, 1 ).unproject( camera );
+                raycaster.set( camera.position, vector.sub( camera.position ).normalize() );
+                var intersects = raycaster.intersectObjects( stars.children );
+                
+                // check if intersecting with star
+                    if ( intersects.length > 0 ) {
+                        if ( INTERSECTED != intersects[ 0 ].object ) {
+                            if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+
+                            INTERSECTED = intersects[ 0 ].object;
+                            INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
+                            // yes intersecting do this
+                            console.log("modal stuff here");
+
+                            
+                        }
+
+                    } else {
+//                        if ( INTERSECTED ) {INTERSECTED.material.opacity= 0.5;
+//                                           starlabel.style.display = "none";}
+                         if ( INTERSECTED ) {}
+                        INTERSECTED = null;
+                    }     
+                
+                console.log("mouseclick detected");
             }
             
             // animations
