@@ -47,7 +47,7 @@
 				'height': options.height + 'px',
 				'width': options.width + 'px',				
 				'background': '#000000', 
-				'z-index':'50',
+				'z-index':'150',
                 '-moz-box-shadow':'0px 0px 50px rgba(255,255,255,0.4)',
                 '-webkit-box-shadow':'0px 0px 50px rgba(255,255,255,0.4)',
                 'box-shadow':'0px 0px 50px rgba(255,255,255,0.4)',
@@ -74,7 +74,7 @@
 				'background-color':'rgba(0,0,0,0.6)',
 				'height':'100%',
 				'width':'100%',
-				'z-index':'10'
+				'z-index':'50',
 			});
 
 		}
@@ -94,10 +94,12 @@
 		 function add_popup_box(){
 			 var pop_up = $('<div class="paulund_modal_box"><a href="#" class="paulund_modal_close"></a><h1>' + options.title + '</h1><h2>' + options.dates +'</h2><p>' + options.description + '</p></div>');
 			 $(pop_up).appendTo('.paulund_block_page');
+             clickable= false;
 			 			 
 			 $('.paulund_modal_close').click(function(){
 				$(this).parent().fadeOut().remove();
-				$('.paulund_block_page').fadeOut().remove();				 
+				$('.paulund_block_page').fadeOut().remove();	
+                 setTimeout('clickable=true', 1000);
 			 });
 		}
 

@@ -91,7 +91,7 @@
             
             .modal {
                 display: none;
-                z-index: 90;
+                z-index: 500;
             }
             
             #container2 { 
@@ -179,6 +179,10 @@
             var starData, lineData, stars, outerGlow;
             var windowx = window.innerWidth;
             var windowy = window.innerHeight;
+            
+            var clickable = false;
+            
+            // how far away stars are to earth
             var positionScale = 0.7;
  
             
@@ -395,6 +399,8 @@
                 
                 function onDocumentMouseMove( event ) {
                     
+                     if(clickable) {
+                         
                     event.preventDefault();
                     mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
                     mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
@@ -430,7 +436,9 @@
                         if ( INTERSECTED ) {INTERSECTED.material.opacity= 0.5;
                                            starlabel.style.display = "none";}
                         INTERSECTED = null;
-                    }       
+                    }   
+                    
+                    
                     
                     //line variables
                     var linelabel = document.getElementById("lineName");
@@ -460,10 +468,14 @@
                     } 
 
                 }
+                    
+                }
                             
                 // camera controls
                 controls = new THREE.OrbitControls(camera);
                 controls.zoomSpeed = 0.1;
+                controls.enabled = false;
+                
                 render();
         
             }
@@ -471,6 +483,7 @@
             // modal
             document.onmousedown = function(e) {
                 
+                if(clickable) {
                 mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
                 mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
                 
@@ -496,6 +509,8 @@
                        currentIntersected = null;
 
                     } 
+                    
+                }
             }
             
             // animations
@@ -506,6 +521,8 @@
                 
                 pos1.chain(pos2);
                 pos1.start();
+                
+                setTimeout('clickable=true', 15500);
             }
 
             //render scene 60 fps
@@ -519,7 +536,11 @@
                 
                 THREEx.WindowResize(renderer, camera);
 				renderer.render(scene, camera);
-                controls.update();
+                
+                controls.update(); 
+                if (clickable) {controls.enabled = true; } else {
+                    controls.enabled = false;
+                }
                 
                 TWEEN.update();
                 
