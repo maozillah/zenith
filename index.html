@@ -202,7 +202,7 @@
                     sprite.position.set(star.position.x, star.position.y, star.position.z);
 //                    star.name=starData[i][7] + " " + starData[i][8];
                     
-                    
+                    sprite.name = starData[i][8];
                     star.name=starData[i][7];
 
                     // for magnitude, the more negative a number, the brighter MAKE NEGATIVE Inverse problem
@@ -212,7 +212,7 @@
                     var glowMag = absoMag*4;
 
                     star.scale.set(absoMag,absoMag,absoMag);
-                     sprite.scale.set(glowMag, glowMag, glowMag);
+                    sprite.scale.set(glowMag, glowMag, glowMag);
 
                     stars.add(star);
                     outerGlow.add(sprite);
@@ -258,7 +258,7 @@
 				raycaster = new THREE.Raycaster();
                 
                 // User interaction
-//                document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+                document.addEventListener( 'mousemove', onDocumentMouseMove, false );
                 
                 function onDocumentMouseMove( event ) {
                     
@@ -281,7 +281,6 @@
                     // check if intersecting with star
                     if ( intersects.length > 0 ) {
                         if ( INTERSECTED != intersects[ 0 ].object ) {
-                            if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
 
                             INTERSECTED = intersects[ 0 ].object;
                             INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
@@ -345,19 +344,19 @@
                 mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
                 mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
                 
-                var vector = new THREE.Vector3( mouse.x, mouse.y, 1 ).unproject( camera );
-                raycaster.set( camera.position, vector.sub( camera.position ).normalize() );
-                var intersects = raycaster.intersectObjects( stars.children );
+                var vector1 = new THREE.Vector3( mouse.x, mouse.y, 1 ).unproject( camera );
+                raycaster.set( camera.position, vector1.sub( camera.position ).normalize() );
+                var intersects1 = raycaster.intersectObjects( outerGlow.children );
                 
                 // check if intersecting with star
-                    if ( intersects.length > 0 ) {
-                        if ( INTERSECTED != intersects[ 0 ].object ) {
-                            if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+                    if ( intersects1.length > 0 ) {
+                        if ( INTERSECTED != intersects1[ 0 ].object ) {
+//                            if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
 
-                            INTERSECTED = intersects[ 0 ].object;
-                            INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
+                            INTERSECTED = intersects1[ 0 ].object;
+//                            INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
                             // yes intersecting do this
-                            console.log("modal stuff here");
+                            console.log(INTERSECTED.name);
 
                             
                         }
@@ -369,7 +368,7 @@
                         INTERSECTED = null;
                     }     
                 
-                console.log("mouseclick detected");
+//                console.log("mouseclick detected");
             }
             
             // animations
