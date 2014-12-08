@@ -186,7 +186,7 @@
                 var spriteMaterial = new THREE.SpriteMaterial( 
                 { 
                     map: new THREE.ImageUtils.loadTexture( 'imgs/glow.png' ), 
-                    color: 0xffffff, transparent: false, blending: THREE.AdditiveBlending
+                    color: 0xffffff, transparent: false, blending: THREE.AdditiveBlending, opacity : 0.5,
                 });
                         
                 for (var i = 1; i < starData.length; i++) {
@@ -224,7 +224,7 @@
                 
                 function drawLines(constellation, constName) {                   
                     var linegeometry = new THREE.Geometry();
-                    material = new THREE.LineBasicMaterial({color: 0x00ffff});
+                    material = new THREE.LineBasicMaterial({color: 0xffffff, transparent: true, opacity : 0.2});
 
                     for (var h = 1; h < lineData[constellation].length; h++) {
                         linegeometry.hip = lineData[constellation][h];
