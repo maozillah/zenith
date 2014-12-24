@@ -395,24 +395,26 @@
 
                 // draw another set of lines for onclick function raycasting
                 var lines = new THREE.Line( linegeometry, material, THREE.LinePieces  );
-                var lines2 = new THREE.Line( linegeometry, material, THREE.LinePieces );
                 lines.name = constName;
-                lines2.name = constName;
                 sceneLines.add( lines );
+                    
+                var lines2 = new THREE.Line( linegeometry, material, THREE.LinePieces );
+                lines2.name = constName;
                 intLines.add( lines2 );
+                
                 }
                 
                 // draw lines 
-//                for (var a = 0; a < 2; a++) {
-//                    drawLines(a,constellations[a]);
-//                }
+                for (var a = 0; a < 10; a++) {
+                    drawLines(a,constellations[a]);
+                }
 //                
-                drawLines(0, "Capricorn"); 
-                drawLines(1, "Aries"); 
-                drawLines(2, "Taurus"); 
+//                drawLines(0, "Capricorn"); 
+//                drawLines(1, "Aries"); 
+//                drawLines(2, "Taurus"); 
                 
-                // not showing
-//                 drawLines(3, "Cancer"); 
+                // not showing, something to do with linepieces?
+//                 drawLines(3, "What the fuck is going on"); 
         
                 // raycasting
 
