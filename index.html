@@ -354,7 +354,7 @@
                     star.name=starData[i][7];
 
                     // for magnitude, the more negative a number, the brighter the star = bigger it should be 
-                    var absoMag = map_range(parseFloat(starData[i][3]), 3.959472819, -3.297647909 , 0, 0.8);
+                    var absoMag = map_range(parseFloat(starData[i][3]), 3.83851492, -10.95303657, 0, 0.8);
                     var glowMag = absoMag*4;
 
                     star.scale.set(absoMag,absoMag,absoMag);
@@ -394,27 +394,25 @@
                 }
 
                 // draw another set of lines for onclick function raycasting
-                var lines = new THREE.Line( linegeometry, material, THREE.LinePieces );
+                var lines = new THREE.Line( linegeometry, material, THREE.LinePieces  );
                 var lines2 = new THREE.Line( linegeometry, material, THREE.LinePieces );
                 lines.name = constName;
                 lines2.name = constName;
                 sceneLines.add( lines );
                 intLines.add( lines2 );
-
                 }
                 
                 // draw lines 
-                for (var a = 0; a < 2; a++) {
-                    drawLines(a,constellations[a]);
-                }
+//                for (var a = 0; a < 2; a++) {
+//                    drawLines(a,constellations[a]);
+//                }
+//                
+                drawLines(0, "Capricorn"); 
+                drawLines(1, "Aries"); 
+                drawLines(2, "Taurus"); 
                 
-//                drawLines(0, "Capricorn"); 
-//                drawLines(1, "Aries"); 
-//                drawLines(2, "Taurus"); 
-                 drawLines(3, "Cancer"); 
-                
-                // should be showing cancer too 
-
+                // not showing
+//                 drawLines(3, "Cancer"); 
         
                 // raycasting
 
