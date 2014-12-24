@@ -185,6 +185,20 @@
             
             // how far away stars are to earth
             var positionScale = 0.7;
+            
+            var constellations = ['Capricorn',
+                                   'Aries',
+                                    'Taurus',
+                                    'Cancer',
+                                    'Leo',
+                                    'Virgo',
+                                    'Libra',
+                                    'Scorpio',
+                                    'Aquarius',
+                                    'Gemini',
+                                    'Pisces',
+                                    'Saggittarius'
+                                    ];
  
             
             $( document ).ready(function() {
@@ -380,8 +394,8 @@
                 }
 
                 // draw another set of lines for onclick function raycasting
-                var lines = new THREE.Line( linegeometry, material );
-                var lines2 = new THREE.Line( linegeometry, material );
+                var lines = new THREE.Line( linegeometry, material, THREE.LinePieces );
+                var lines2 = new THREE.Line( linegeometry, material, THREE.LinePieces );
                 lines.name = constName;
                 lines2.name = constName;
                 sceneLines.add( lines );
@@ -389,9 +403,17 @@
 
                 }
                 
-                drawLines(0, "Aries"); // aries
-                drawLines(1, "Capricorn"); //capricorn
-                drawLines(2, "Taurus"); //Taurus
+                // draw lines 
+                for (var a = 0; a < 2; a++) {
+                    drawLines(a,constellations[a]);
+                }
+                
+//                drawLines(0, "Capricorn"); 
+//                drawLines(1, "Aries"); 
+//                drawLines(2, "Taurus"); 
+                 drawLines(3, "Cancer"); 
+                
+                // should be showing cancer too 
 
         
                 // raycasting
