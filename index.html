@@ -265,8 +265,8 @@
                         }  		
                 }
 
-                var lines = new THREE.Line( linegeometry, material );
-                var lines2 = new THREE.Line( linegeometry, material );
+                var lines = new THREE.Line( linegeometry, material, THREE.LinePieces );
+                var lines2 = new THREE.Line( linegeometry, material, THREE.LinePieces );
                 lines.name = constName;
                 lines2.name = constName;
                 sceneLines.add( lines );
@@ -276,6 +276,8 @@
                 
                 drawLines(0, "Aries"); // aries
                 drawLines(1, "Capricorn"); //capricorn
+                 drawLines(3, "Capricorn");
+                drawLines(4, "Capricorn");
 
         
                 // raycasting
