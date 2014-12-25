@@ -396,20 +396,20 @@
                     
                     star = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({color:0x99FFCC, transparent: true, opacity : 0.5})); 
                     
-                    star.position.x = parseFloat(starData[i][4] *positionScale); 
-                    star.position.y = parseFloat(starData[i][5] *positionScale);
-                    star.position.z = parseFloat(starData[i][6] *positionScale);
+                    star.position.x = parseFloat(starData[i][2] *positionScale); 
+                    star.position.y = parseFloat(starData[i][3] *positionScale);
+                    star.position.z = parseFloat(starData[i][4] *positionScale);
                     
                     // give outer glow same positions as stars
                     sprite.position.set(star.position.x, star.position.y, star.position.z);
                     
                     // set it equal to constellation name
-                    sprite.name = starData[i][8];
+                    sprite.name = starData[i][6];
                     // set it equal to star name
-                    star.name=starData[i][7];
+                    star.name=starData[i][5];
 
                     // for magnitude, the more negative a number, the brighter the star = bigger it should be 
-                    var absoMag = map_range(parseFloat(starData[i][3]), 3.83851492, -10.95303657, 0.05, 0.6);
+                    var absoMag = map_range(parseFloat(starData[i][1]), 3.83851492, -10.95303657, 0.05, 0.6);
                     var glowMag = absoMag*4;
 
                     star.scale.set(absoMag,absoMag,absoMag);
@@ -435,12 +435,12 @@
                         linegeometry.hip = lineData[constellation][h];
 
                         for (var i = 1; i < starData.length; i++) {
-                        star.hip = starData[i][0]; //constellation name
+                        star.hip = starData[i][0]; //hip
 
                             if (star.hip == linegeometry.hip) {
-                                star.position.x = parseFloat(starData[i][4] *positionScale); 
-                                star.position.y = parseFloat(starData[i][5] *positionScale);
-                                star.position.z = parseFloat(starData[i][6] *positionScale);
+                                star.position.x = parseFloat(starData[i][2] *positionScale); 
+                                star.position.y = parseFloat(starData[i][3] *positionScale);
+                                star.position.z = parseFloat(starData[i][4] *positionScale);
                                 
                                 // set position of stars as the vertices of constellation
                                 linegeometry.vertices.push( star.position.clone() );
