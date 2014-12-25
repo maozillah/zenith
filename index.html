@@ -303,14 +303,14 @@
                 earth.add(cloudMesh);
                 
                 //galaxy sphere with stars
-                var geometry  = new THREE.SphereGeometry(800, 32, 32);
+                var geometry  = new THREE.SphereGeometry(900, 32, 32);
                 var material  = new THREE.MeshBasicMaterial();
                 var galaxy = new THREE.Mesh(geometry, material);
                 
                 material.map   = THREE.ImageUtils.loadTexture('imgs/galaxy.png');
                 material.side  = THREE.BackSide; //map image to inside of sphere
                 var mesh  = new THREE.Mesh(geometry, material);
-//                scene.add(galaxy);
+                scene.add(galaxy);
                 
                 // use to map magnitudes to sphere sizes
                 function map_range(value, low1, high1, low2, high2) {
@@ -353,7 +353,7 @@
                     star.name=starData[i][7];
 
                     // for magnitude, the more negative a number, the brighter the star = bigger it should be 
-                    var absoMag = map_range(parseFloat(starData[i][3]), 3.83851492, -10.95303657, 0, 0.8);
+                    var absoMag = map_range(parseFloat(starData[i][3]), 3.83851492, -10.95303657, 0.05, 0.6);
                     var glowMag = absoMag*4;
 
                     star.scale.set(absoMag,absoMag,absoMag);
