@@ -200,7 +200,6 @@
                                     'Saggittarius'
                                     ];
  
-            
             $( document ).ready(function() {
                 $.get( "data/constellation_data.csv", function( data ) {
                     starData = $.csv.toArrays(data);
@@ -304,14 +303,14 @@
                 earth.add(cloudMesh);
                 
                 //galaxy sphere with stars
-                var geometry  = new THREE.SphereGeometry(500, 32, 32);
+                var geometry  = new THREE.SphereGeometry(800, 32, 32);
                 var material  = new THREE.MeshBasicMaterial();
                 var galaxy = new THREE.Mesh(geometry, material);
                 
                 material.map   = THREE.ImageUtils.loadTexture('imgs/galaxy.png');
                 material.side  = THREE.BackSide; //map image to inside of sphere
                 var mesh  = new THREE.Mesh(geometry, material);
-                scene.add(galaxy);
+//                scene.add(galaxy);
                 
                 // use to map magnitudes to sphere sizes
                 function map_range(value, low1, high1, low2, high2) {
@@ -405,16 +404,9 @@
                 }
                 
                 // draw lines 
-                for (var a = 0; a < 10; a++) {
+                for (var a = 0; a < constellations.length; a++) {
                     drawLines(a,constellations[a]);
                 }
-//                
-//                drawLines(0, "Capricorn"); 
-//                drawLines(1, "Aries"); 
-//                drawLines(2, "Taurus"); 
-                
-                // not showing, something to do with linepieces?
-//                 drawLines(3, "What the fuck is going on"); 
         
                 // raycasting
 
