@@ -544,7 +544,6 @@
                 // camera controls
                 controls = new THREE.OrbitControls(camera);
                 controls.zoomSpeed = 0.1;
-                controls.enabled = false; // initially turned off because of splashpage
                 
                 render();
         
@@ -607,10 +606,6 @@
 				renderer.render(scene, camera);
                 
                 controls.update();
-                // constantly check variable to toggle orbit controls on/off depending if modal is there
-                if (clickable) {controls.enabled = true; } else {
-                    controls.enabled = false;
-                }
                 
                 TWEEN.update();
 			}
