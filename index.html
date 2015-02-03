@@ -380,11 +380,10 @@
             
             $( document ).ready(function() {
                 //detect if mobile device
-               var isMobile = window.matchMedia("only screen and (max-width: 760px)");
-
-                if (isMobile.matches) {
+               if (navigator.userAgent.match(/Mobi/)) {
                    $('.warning').click();
-                }
+                   alert("mobile detected");
+               }
                 
                  // splashscreen
                 $('.explore').click(function () {
