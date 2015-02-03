@@ -103,6 +103,15 @@
                 z-index: 100;
             }
             
+            #container3 { 
+                position: absolute; 
+                width: 100%;
+                height: 100%;
+                background: #000;
+                background-image: #000;
+                z-index: 200;
+            }
+            
             #splashscreen {
                 margin: auto;
                 position: relative;
@@ -110,7 +119,18 @@
                 text-align: center;
                 height: 200px;
                 width: 600px;
-                 top: 50%;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+            
+            #preloader {
+                margin: auto;
+                position: relative;
+                color: #fff;
+                text-align: center;
+                height: 50px;
+                width: 50px;
+                top: 40%;
                 transform: translateY(-50%);
             }
             
@@ -132,13 +152,152 @@
                 display: none;
                 color: #FFFFEB;
             }
+            
+/*            loader animation*/
+            
+            .spinner {
+  margin: 100px auto;
+  width: 50px;
+  height: 50px;
+  position: relative;
+}
+
+.container1 > div, .container2 > div, .container3 > div {
+  width: 8px;
+  height: 8px;
+  background-color: #fff;
+  border-radius: 100%;
+  position: absolute;
+  -webkit-animation: bouncedelay 1.2s infinite ease-in-out;
+  animation: bouncedelay 1.2s infinite ease-in-out;
+  /* Prevent first frame from flickering when animation starts */
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+.spinner .spinner-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.container2 {
+  -webkit-transform: rotateZ(45deg);
+  transform: rotateZ(45deg);
+}
+
+.container3 {
+  -webkit-transform: rotateZ(90deg);
+  transform: rotateZ(90deg);
+}
+
+.circle1 { top: 0; left: 0; }
+.circle2 { top: 0; right: 0; }
+.circle3 { right: 0; bottom: 0; }
+.circle4 { left: 0; bottom: 0; }
+
+.container2 .circle1 {
+  -webkit-animation-delay: -1.1s;
+  animation-delay: -1.1s;
+}
+
+.container3 .circle1 {
+  -webkit-animation-delay: -1.0s;
+  animation-delay: -1.0s;
+}
+
+.container1 .circle2 {
+  -webkit-animation-delay: -0.9s;
+  animation-delay: -0.9s;
+}
+
+.container2 .circle2 {
+  -webkit-animation-delay: -0.8s;
+  animation-delay: -0.8s;
+}
+
+.container3 .circle2 {
+  -webkit-animation-delay: -0.7s;
+  animation-delay: -0.7s;
+}
+
+.container1 .circle3 {
+  -webkit-animation-delay: -0.6s;
+  animation-delay: -0.6s;
+}
+
+.container2 .circle3 {
+  -webkit-animation-delay: -0.5s;
+  animation-delay: -0.5s;
+}
+
+.container3 .circle3 {
+  -webkit-animation-delay: -0.4s;
+  animation-delay: -0.4s;
+}
+
+.container1 .circle4 {
+  -webkit-animation-delay: -0.3s;
+  animation-delay: -0.3s;
+}
+
+.container2 .circle4 {
+  -webkit-animation-delay: -0.2s;
+  animation-delay: -0.2s;
+}
+
+.container3 .circle4 {
+  -webkit-animation-delay: -0.1s;
+  animation-delay: -0.1s;
+}
+
+@-webkit-keyframes bouncedelay {
+  0%, 80%, 100% { -webkit-transform: scale(0.0) }
+  40% { -webkit-transform: scale(1.0) }
+}
+
+@keyframes bouncedelay {
+  0%, 80%, 100% { 
+    transform: scale(0.0);
+    -webkit-transform: scale(0.0);
+  } 40% { 
+    transform: scale(1.0);
+    -webkit-transform: scale(1.0);
+  }
+}
 
         </style>
 	</head>
     
 	<body>
         
+    <div id="container3">
+        <div id="preloader">
+            <div class="spinner">
+              <div class="spinner-container container1">
+                <div class="circle1"></div>
+                <div class="circle2"></div>
+                <div class="circle3"></div>
+                <div class="circle4"></div>
+              </div>
+              <div class="spinner-container container2">
+                <div class="circle1"></div>
+                <div class="circle2"></div>
+                <div class="circle3"></div>
+                <div class="circle4"></div>
+              </div>
+              <div class="spinner-container container3">
+                <div class="circle1"></div>
+                <div class="circle2"></div>
+                <div class="circle3"></div>
+                <div class="circle4"></div>
+              </div>
+            </div>
+        </div>    
+    </div>
+        
     <div id="container2">
+        
         <div id="splashscreen">
                 <h1>Zenith</h1>
          <br/><br/>
@@ -210,8 +369,19 @@
                                     'Pisces',
                                     'Saggittarius'
                                     ];
- 
+            
+            $(window).load(function(){
+                // remove loader when finished loading
+                $("#preloader").fadeOut(800);
+                $("#container3").delay(1000).fadeOut("slow"); 
+            });
+            
             $( document ).ready(function() {
+                 // splashscreen
+                $('.explore').click(function () {
+                    $('#container2').fadeOut(500);
+                });     
+                
                 $.get( "data/constellation_data.csv", function( data ) {
                     starData = $.csv.toArrays(data);
                     console.log("constellation data ready!");
@@ -296,11 +466,7 @@
                     });
                     
                 });
-                                
-             // splashscreen
-                $('.explore').click(function () {
-                    $('#container2').fadeOut(500);
-                });       
+                              
 
             });
 
