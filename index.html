@@ -312,8 +312,6 @@
             
         </container>
         
-        
-        <a href="#" class="warning modal">Aries</a>
         <a href="#" class="Aries modal">Aries</a>
         <a href="#" class="Capricorn modal">Capricorn</a>
         <a href="#" class="Taurus modal">Taurus</a>
@@ -381,18 +379,22 @@
             $( document ).ready(function() {
                 //detect if touch device
                 
-                function is_touch_device() {
-                 return (('ontouchstart' in window)
-                      || (navigator.MaxTouchPoints > 0)
-                      || (navigator.msMaxTouchPoints > 0));
+                function isTouchSupported() {
+                    var msTouchEnabled = window.navigator.msMaxTouchPoints;
+                    var generalTouchEnabled = "ontouchstart" in document.createElement("div");
+
+                    if (msTouchEnabled || generalTouchEnabled) {
+                        return true;
+                    }
+                    return false;
                 }
                 
-                if (!is_touch_device()) {
-                    $('.warning').click();
+                if (isTouchSupported()) {
                     alert("mobile fuck");
+                } else {
+                    console.log('no touching');
                 }
-//                 $('.warning').click();
-                
+               
                  // splashscreen
                 $('.explore').click(function () {
                     $('#container2').fadeOut(500);
@@ -411,14 +413,7 @@
                     
                     // modals pulling the template from js/jquerymodal.js
 
-                     $('.warning').paulund_modal_box({
-                        title:'Warning',
-                        dates: 'Zenith',
-                        description:"Please use chrome for best viewing experience"
-                        ,
-                        width: '800'
-                    });
-                    
+                
                     $('.info').paulund_modal_box({
                         title:'Zenith',
                         dates: 'by kaye mao',
