@@ -312,6 +312,8 @@
             
         </container>
         
+        
+        <a href="#" class="warning modal">Aries</a>
         <a href="#" class="Aries modal">Aries</a>
         <a href="#" class="Capricorn modal">Capricorn</a>
         <a href="#" class="Taurus modal">Taurus</a>
@@ -378,8 +380,10 @@
             
             $( document ).ready(function() {
                 //detect if mobile device
-                if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-                    $('.warning').click();
+               var isMobile = window.matchMedia("only screen and (max-width: 760px)");
+
+                if (isMobile.matches) {
+                   $('.warning').click();
                 }
                 
                  // splashscreen
