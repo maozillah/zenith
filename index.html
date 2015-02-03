@@ -377,6 +377,11 @@
             });
             
             $( document ).ready(function() {
+                //detect if mobile device
+                if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+                    $('.warning').click();
+                }
+                
                  // splashscreen
                 $('.explore').click(function () {
                     $('#container2').fadeOut(500);
@@ -394,6 +399,15 @@
                     });
                     
                     // modals pulling the template from js/jquerymodal.js
+
+                     $('.warning').paulund_modal_box({
+                        title:'Warning',
+                        dates: 'Zenith',
+                        description:"Please use chrome for best viewing experience"
+                        ,
+                        width: '800'
+                    });
+                    
                     $('.info').paulund_modal_box({
                         title:'Zenith',
                         dates: 'by kaye mao',
