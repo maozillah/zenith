@@ -379,11 +379,19 @@
             });
             
             $( document ).ready(function() {
-                //detect if mobile device
-               if (navigator.userAgent.match(/Mobi/)) {
-                   $('.warning').click();
-                   alert("mobile detected");
-               }
+                //detect if touch device
+                
+                function is_touch_device() {
+                 return (('ontouchstart' in window)
+                      || (navigator.MaxTouchPoints > 0)
+                      || (navigator.msMaxTouchPoints > 0));
+                }
+                
+                if (!is_touch_device()) {
+                    $('.warning').click();
+                    alert("mobile fuck");
+                }
+//                 $('.warning').click();
                 
                  // splashscreen
                 $('.explore').click(function () {
