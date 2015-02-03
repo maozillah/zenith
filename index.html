@@ -91,7 +91,7 @@
             
             .modal {
                 display: none;
-                z-index: 500;
+                z-index: 800;
             }
             
             #container2 { 
@@ -390,7 +390,7 @@
                 }
                 
                 if (isTouchSupported()) {
-                    alert("mobile fuck");
+                    alert("This experience doesn't work well on touch devices :(\nPlease view it on desktop with Chrome for optimal experience.");
                 } else {
                     console.log('no touching');
                 }
@@ -757,7 +757,9 @@
                             currentIntersected = lineintersects[ 0 ].object;
 
                             // trigger modal corresponding with constellation
+                           
                             $('.'+currentIntersected.name).click();
+                            $('.modal').style.display = "initial";
                         }
 
                     } else {
