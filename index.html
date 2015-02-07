@@ -121,9 +121,9 @@
                 background: #000;
                 background-image: #000;
                 z-index: 250;
-/*                visibility: hidden;*/
+                visibility: hidden;
             }
-            
+                
             #mobile-warning {
                 margin: auto;
                 position: relative;
@@ -434,7 +434,8 @@
                 
                 // if is not a touch device
                 if (!isTouchSupported() && isChrome) {
-                    $('#container4').hide();
+//                    $('#container4').hide();
+                    $(":hidden").css("visibility", "visible");
                     console.log('Not a touch device');
                     console.log('Chrome Browser: '+isChrome);
                 }
