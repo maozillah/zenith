@@ -133,11 +133,6 @@
                 transform: translateY(-50%);
             }
             
-            #mobile-warning p {
-                font-size: 2.5em;
-                
-            }
-            
             #splashscreen {
                 margin: auto;
                 position: relative;
@@ -335,9 +330,9 @@
         
         <div id="container4">
         <div id="mobile-warning">
-            <h1>Oh noe</h1>
+            <h1>Oh noe!</h1>
             <p>This experience doesn't work well on touch devices or browsers other than Chrome.</p>
-            <img src="imgs/broken.png" alt="Little bird peeking out of a shell">
+<!--            <img src="imgs/broken.png" alt="Little bird peeking out of a shell">-->
             <p>Please view it on <strong>Desktop with Chrome</strong> for an optimal experience.</p>
         </div>    
     </div>
@@ -413,6 +408,10 @@
             });
             
             $( document ).ready(function() {
+                // detect if chrome browser. possibly buggy
+                var isOpera = !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
+                var isChrome = !!window.chrome && !isOpera;  
+                
                 //detect if touch device
                 
                   function isTouchSupported() {
@@ -425,13 +424,12 @@
                     return false;
                 }
                 
-                
-                if (isTouchSupported()) {
-//                   $('#container4').show();
-               } else {
+                // if is not a touch device
+                if (!isTouchSupported() && isChrome) {
                     $('#container4').hide();
-                   console.log('Not a touch device');
-               }
+                    console.log('Not a touch device');
+                    console.log('Browser is '+isChrome);
+                }
                
                  // splashscreen
                 $('.explore').click(function () {
