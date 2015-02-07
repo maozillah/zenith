@@ -112,14 +112,35 @@
                 z-index: 200;
             }
             
+            #container4 { 
+                position: absolute; 
+                width: 100%;
+                height: 100%;
+                background: #000;
+                background-image: #000;
+                z-index: 250;
+/*                visibility: hidden;*/
+            }
+            
+            #mobile-warning {
+                margin: auto;
+                position: relative;
+                color: #fff;
+                text-align: center;
+                height: 5%;
+                width: 25%;
+                top: 40%;
+                transform: translateY(-50%);
+            }
+            
             #splashscreen {
                 margin: auto;
                 position: relative;
                 color: #fff;
                 text-align: center;
-                height: 200px;
-                width: 600px;
-                top: 50%;
+                height: 10%;
+                width: 20%;   
+                top: 45%;
                 transform: translateY(-50%);
             }
             
@@ -307,6 +328,15 @@
         </div>
     </div>
         
+        <div id="container4">
+        <div id="mobile-warning">
+            <h1>Oh noe</h1>
+            <p>This experience doesn't work well on touch devices or browsers other than Chrome.</p>
+            <img src="imgs/broken.png" alt="Little bird peeking out of a shell">
+            <p>Please view it on <strong>Desktop with Chrome</strong> for an optimal experience.</p>
+        </div>    
+    </div>
+        
         <container>
            <h1>Zenith</h1><a href="#" class="info">?</a>
             
@@ -374,12 +404,13 @@
                 // remove loader when finished loading
                 $("#preloader").fadeOut(800);
                 $("#container3").delay(1000).fadeOut("slow"); 
+                
             });
             
             $( document ).ready(function() {
                 //detect if touch device
                 
-                function isTouchSupported() {
+                  function isTouchSupported() {
                     var msTouchEnabled = window.navigator.msMaxTouchPoints;
                     var generalTouchEnabled = "ontouchstart" in document.createElement("div");
 
@@ -389,11 +420,14 @@
                     return false;
                 }
                 
+                
                 if (isTouchSupported()) {
-                    alert("This experience doesn't work well on touch devices :(\nPlease view it on desktop with Chrome for optimal experience.");
-                } else {
-                    console.log('no touching');
-                }
+                    alert("fuck mobile");
+//                   $('#container4').show();
+               } else {
+                    $('#container4').hide();
+                   console.log('Not a touch device');
+               }
                
                  // splashscreen
                 $('.explore').click(function () {
