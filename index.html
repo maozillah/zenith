@@ -112,14 +112,35 @@
                 z-index: 200;
             }
             
+            #container4 { 
+                position: absolute; 
+                width: 100%;
+                height: 100%;
+                background: #000;
+                background-image: #000;
+                z-index: 150;
+                visibility: hidden;
+            }
+            
+            #mobile-warning {
+                margin: auto;
+                position: relative;
+                color: #fff;
+                text-align: center;
+                height: 5%;
+                width: 25%;
+                top: 40%;
+                transform: translateY(-50%);
+            }
+            
             #splashscreen {
                 margin: auto;
                 position: relative;
                 color: #fff;
                 text-align: center;
-                height: 200px;
-                width: 600px;
-                top: 50%;
+                height: 10%;
+                width: 20%;   
+                top: 45%;
                 transform: translateY(-50%);
             }
             
@@ -305,6 +326,15 @@
             Click to find out more.
                 <br/><br/><a href="#" class="explore button" onclick="moveCam();"><h1 class="button">Explore</h1></a>   
         </div>
+    </div>
+        
+        <div id="container4">
+        <div id="mobile-warning">
+            <h1>Oh noe</h1>
+            <p>This experience doesn't work well on touch devices or browsers other than Chrome.</p>
+            <img src="imgs/broken.png" alt="Little bird peeking out of a shell">
+            <p>Please view it on <strong>Desktop with Chrome</strong> for an optimal experience.</p>
+        </div>    
     </div>
         
         <container>
