@@ -7,7 +7,7 @@
  * 
  * Available for free download from http://www.paulund.co.uk
  
- modified dec 8, 2014 by Kaye Mao
+ Modified dec 8, 2014 by Kaye Mao
  */
 
 (function($){
@@ -24,7 +24,7 @@
 			title:"JQuery Modal Box Demo",
             dates: "jan-dec",
 			description: "Example of how to create a modal box.",
-			top: "30%",
+			top: "35%",
 			left: "30%",
 		},prop);
 				

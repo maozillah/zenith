@@ -174,6 +174,12 @@
                 color: #FFFFEB;
             }
             
+            .paulund_modal_box strong {
+                font-size: 1.5em;
+                font-weight: 500;
+                line-height: 1.8em;
+            }
+            
             /* loader animation courtesy of http://tobiasahlin.com/spinkit/*/
             
             .spinner {
@@ -322,7 +328,7 @@
         <div id="splashscreen">
                 <h1>Zenith</h1>
          <br/><br/>
-            Use your mouse: drag to navigate, scroll to zoom. <br/>
+            <strong>Use your mouse:</strong> <br/>drag to navigate, scroll to zoom. <br/>
             Click to find out more.
                 <br/><br/><a href="#" class="explore button" onclick="moveCam();"><h1 class="button">Explore</h1></a>   
         </div>
@@ -333,7 +339,7 @@
             <h1>Oh noe!</h1>
             <p>This experience doesn't work well on touch devices or browsers other than Chrome.</p>
 <!--            <img src="imgs/broken.png" alt="Little bird peeking out of a shell">-->
-            <p>Please view it on <strong>Desktop with Chrome</strong> for an optimal experience.</p>
+            <p>Please view it on <strong>Desktop with <a href="https://www.google.com/chrome/browser/desktop/" target="_blank">Chrome</a></strong> for an optimal experience.</p>
         </div>    
     </div>
         
@@ -412,7 +418,7 @@
                 var isOpera = !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
                 var isChrome = !!window.chrome && !isOpera;  
                 
-                //detect if touch device
+                //detect if touch device, credit: http://www.kirupa.com/html5/check_if_you_are_on_a_touch_enabled_device.htm
                 
                   function isTouchSupported() {
                     var msTouchEnabled = window.navigator.msMaxTouchPoints;
@@ -448,14 +454,14 @@
                     });
                     
                     // modals pulling the template from js/jquerymodal.js
-
                 
                     $('.info').paulund_modal_box({
                         title:'Zenith',
-                        dates: 'by kaye mao',
-                        description:"Use your mouse: drag to navigate, scroll to zoom. <br/>Click to find out more."
+                        dates: 'An interactive constellations experience',
+                        description:"Our perception of the constellations is limited to that of a flattened connect the dots. However, the stars of our constellations exist in 3 dimensional space (heh). Zenith invites people to explore the constellations that we know so well from another perspective. <br/><br/><strong>Instructions</strong><br/>Use your mouse: drag to navigate, scroll to zoom. Click to find out more.<br/><br/><strong>Credits</strong><br/>In no particular order, thank you to everyone who helped make this possible.<br/> <a href='http://threejs.org/' target='_blank'>Three.js</a> - <a href='http://www.webspaceinvader.com/' target='_blank'>Professor Mark Shufflebottom</a> - <a href='https://stemkoski.github.io/Three.js/' target='_blank'>Stemkoski Three.js Examples</a> - <a href='http://learningthreejs.com/blog/2013/09/16/how-to-make-the-earth-in-webgl/' target='_blank'>Learning Three Js - <a href='http://astronexus.com/hyg' target='_blank'>HYG Database</a> - <a href='http://www.stellarium.org/en_CA/' target='_blank'>Stellarium</a> - <a href='http://www.space.com/15722-constellations.html' target='_blank'>Constellations Lore</a> - <a href='https://code.google.com/p/jquery-csv/' target='_blank'>JQuery to CSV</a> - <a href='http://blog.abhinav.ca/' target='_blank'>Abhinav Ajgaonkar for Python help</a> - <a href='http://www.paulund.co.uk/' target='_blank'>Modals</a>"
                         ,
                         width: '800'
+                        ,top: '23%'
                     });
                     
                     $('.Aries').paulund_modal_box({
