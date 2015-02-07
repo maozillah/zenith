@@ -1,16 +1,16 @@
 <html>
-	<head>
-		<title> Z e n i t h</title>
+    <head>
+        <title> Z e n i t h</title>
         <link href='http://fonts.googleapis.com/css?family=Roboto:500,300' rel='stylesheet' type='text/css'>
         <link rel="shortcut icon" href="/fav.ico" type="image/x-icon">
         <link rel="icon" href="/fav.ico" type="image/x-icon">
-		<style>
+        <style>
             
             html * {
                 font-size: 12pt;
             }
             body { width: 100%; height: 100%; margin: 0; padding: 0; height: 100%;
-				overflow:hidden;
+                overflow:hidden;
                 font-size:1.3em;
                font-family: 'Roboto', sans-serif;
                 font-weight: 300;
@@ -121,7 +121,7 @@
                 background: #000;
                 background-image: #000;
                 z-index: 250;
-                visibility: hidden;
+/*                visibility: hidden;*/
             }
             
             #mobile-warning {
@@ -161,7 +161,7 @@
                 position: absolute;
                 top: 0px; 
                 left: 0px;
-				padding: 5px;
+                padding: 5px;
                 display: none;
                 color: #FFFFEB;
 
@@ -171,7 +171,7 @@
                 position: absolute;
                 top: 0px; 
                 left: 0px;
-				padding: 5px;
+                padding: 5px;
                 display: none;
                 color: #FFFFEB;
             }
@@ -296,9 +296,9 @@
             }
 
         </style>
-	</head>
+    </head>
     
-	<body>
+    <body>
         
     <div id="container3">
         <div id="preloader">
@@ -368,7 +368,7 @@
         <div id="starName">No star hovered</div>
         <div id="lineName">No constellation hovered</div>
         
-		<script src="js/three.min.js"></script>
+        <script src="js/three.min.js"></script>
         <script src="js/Detector.js"></script>
         <script src="js/OrbitControls.js"></script>
         <script src="js/jquery-2.1.3.min.js"></script> 
@@ -376,7 +376,7 @@
         <script src='js/THREEx.WindowResize.js'></script>
         <script src="js/jquery-csv.min.js"></script>
         <script src="js/tween.min.js"></script>
-		<script>
+        <script>
             var scene, camera, renderer, axes;
             
             //raycasting
@@ -460,10 +460,10 @@
                     $('.info').paulund_modal_box({
                         title:'Zenith',
                         dates: 'An interactive constellations experience',
-                        description:"By <a href='http://maozillah.com/' target='_blank'>Kaye Mao</a> Our perception of the constellations is limited to that of a flattened connect the dots. However, the stars of our constellations exist in 3 dimensional space (heh). Zenith invites people to explore the constellations that we know so well from another perspective. <br/><strong>Instructions</strong><br/>Use your mouse: drag to navigate, scroll to zoom. Click to find out more.<br/><strong>Credits</strong><br/>This is still a work in progress but in no particular order, thank you to everyone who helped make this possible.<br/> <a href='http://threejs.org/' target='_blank'>Three.js</a> - <a href='http://www.webspaceinvader.com/' target='_blank'>Professor Mark Shufflebottom</a> - <a href='https://stemkoski.github.io/Three.js/' target='_blank'>Stemkoski Three.js Examples</a> - <a href='http://learningthreejs.com/blog/2013/09/16/how-to-make-the-earth-in-webgl/' target='_blank'>Learning Three Js - <a href='http://astronexus.com/hyg' target='_blank'>HYG Database</a> - <a href='http://www.stellarium.org/en_CA/' target='_blank'>Stellarium</a> - <a href='http://www.space.com/15722-constellations.html' target='_blank'>Constellations Lore</a> - <a href='https://code.google.com/p/jquery-csv/' target='_blank'>JQuery to CSV</a> - <a href='http://blog.abhinav.ca/' target='_blank'>Abhinav Ajgaonkar for Python help</a> - <a href='http://www.paulund.co.uk/' target='_blank'>Modals</a>"
+                        description:"By <a href='http://maozillah.com/' target='_blank'>Kaye Mao</a> Our perception of the constellations is limited to that of a flattened connect the dots. However, the stars of our constellations exist in 3 dimensional space (heh). Zenith invites people to explore the constellations that we know so well from another perspective. <br/><strong>Instructions</strong><br/>Use your mouse: drag to navigate, scroll to zoom. Click to find out more.<br/><strong>Credits</strong><br/>In no particular order, thank you to everyone who helped make this possible.<br/> <a href='http://threejs.org/' target='_blank'>Three.js</a> - <a href='http://www.webspaceinvader.com/' target='_blank'>Professor Mark Shufflebottom</a> - <a href='https://stemkoski.github.io/Three.js/' target='_blank'>Stemkoski Three.js Examples</a> - <a href='http://learningthreejs.com/blog/2013/09/16/how-to-make-the-earth-in-webgl/' target='_blank'>Learning Three Js - <a href='http://astronexus.com/hyg' target='_blank'>HYG Database</a> - <a href='http://www.stellarium.org/en_CA/' target='_blank'>Stellarium</a> - <a href='http://www.space.com/15722-constellations.html' target='_blank'>Constellations Lore</a> - <a href='https://code.google.com/p/jquery-csv/' target='_blank'>JQuery to CSV</a> - <a href='http://blog.abhinav.ca/' target='_blank'>Abhinav Ajgaonkar for Python help</a> - <a href='http://www.paulund.co.uk/' target='_blank'>Modals</a>"
                         ,
                         width: '800'
-                        ,top: '8%'
+                        ,top: '18%'
                     });
                     
                     $('.Aries').paulund_modal_box({
@@ -549,8 +549,8 @@
                 document.body.appendChild(renderer.domElement);
                 
                 //let there be light
-                var light	= new THREE.AmbientLight( 0x888888 );
-	           scene.add( light );
+                var light   = new THREE.AmbientLight( 0x888888 );
+               scene.add( light );
                 
                 var light = new THREE.SpotLight( 0xCCCCCC, 1, 0, Math.PI, 1);
                 light.position.set(20,50,50);
@@ -675,7 +675,7 @@
                                 // set position of stars as the vertices of constellation
                                 linegeometry.vertices.push( star.position.clone() );
                             }
-                        }  		
+                        }       
                 }
 
                 // draw another set of lines for onclick function raycasting
@@ -697,7 +697,7 @@
                 // raycasting
 
                 projector = new THREE.Projector();
-				raycaster = new THREE.Raycaster();
+                raycaster = new THREE.Raycaster();
                 
                 document.addEventListener( 'mousemove', onDocumentMouseMove, false );
                 
@@ -708,7 +708,7 @@
                     event.preventDefault();
                     mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
                     mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
-		
+        
                     // label
                     var starlabel = document.getElementById("starName");
 
@@ -825,8 +825,8 @@
             }
 
             //render scene 60 fps
-			function render() {
-				requestAnimationFrame(render);
+            function render() {
+                requestAnimationFrame(render);
 
                 camera.lookAt (scene.position);
                 
@@ -834,13 +834,13 @@
                 
                 // threex plugin for dynamic resizing of window
                 THREEx.WindowResize(renderer, camera);
-				renderer.render(scene, camera);
+                renderer.render(scene, camera);
                 
                 controls.update();
                 
                 TWEEN.update();
-			}
+            }
         
-		</script>
-	</body>
+        </script>
+    </body>
 </html>
