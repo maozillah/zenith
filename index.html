@@ -118,8 +118,8 @@
                 height: 100%;
                 background: #000;
                 background-image: #000;
-                z-index: 150;
-                visibility: hidden;
+                z-index: 250;
+/*                visibility: hidden;*/
             }
             
             #mobile-warning {
@@ -404,12 +404,13 @@
                 // remove loader when finished loading
                 $("#preloader").fadeOut(800);
                 $("#container3").delay(1000).fadeOut("slow"); 
+                
             });
             
             $( document ).ready(function() {
                 //detect if touch device
                 
-                function isTouchSupported() {
+                  function isTouchSupported() {
                     var msTouchEnabled = window.navigator.msMaxTouchPoints;
                     var generalTouchEnabled = "ontouchstart" in document.createElement("div");
 
@@ -420,10 +421,11 @@
                 }
                 
                 if (isTouchSupported()) {
-                    alert("This experience doesn't work well on touch devices :(\nPlease view it on desktop with Chrome for optimal experience.");
-                } else {
-                    console.log('Touch not supported');
-                }
+                   $('#container4').show();
+               } else {
+                    $('#container4').hide();
+                   console.log('Not a touch device');
+               }
                
                  // splashscreen
                 $('.explore').click(function () {
