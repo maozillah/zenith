@@ -24,8 +24,7 @@
 			title:"JQuery Modal Box Demo",
             dates: "jan-dec",
 			description: "Example of how to create a modal box.",
-			top: "35%",
-			left: "30%",
+			top: "50%",
 		},prop);
 				
 		//Click event on element
@@ -42,8 +41,7 @@
 		 */
 		 function add_styles(){			
 			$('.paulund_modal_box').css({ 
-				'position':'absolute', 
-				'left':options.left,
+				'position':'relative', 
 				'top':options.top,
 				'display':'none',
 				'height': options.height + 'px',
@@ -57,7 +55,8 @@
 				'-moz-border-radius':'10px',
 				'-webkit-border-radius':'10px',
                 'padding':'20px',
-                'margin':'auto'
+                'margin':'auto',
+                'transform': 'translateY(-50%)'
 			});
 			$('.paulund_modal_close').css({
 				'position':'relative',
